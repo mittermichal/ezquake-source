@@ -574,14 +574,14 @@ void Host_Init (int argc, char **argv, int default_memsize)
 	COM_InitArgv (argc, argv);
 	COM_StoreOriginalCmdline(argc, argv);
 
-	if (SDL_Init(0) != 0)
+    /*if (SDL_Init(0) != 0)
 	{
 		fprintf(stderr, "Failed to initialize SDL: %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
-	}
-	atexit(SDL_Quit);
+    }
+    atexit(SDL_Quit);*/
 
-	Host_InitMemory (default_memsize);
+    Host_InitMemory (default_memsize);
 
 #ifdef WITH_TCL
 	// interpreter should be initialized
@@ -591,18 +591,18 @@ void Host_Init (int argc, char **argv, int default_memsize)
 	Cbuf_Init ();
 	Cmd_Init ();
 	Cvar_Init ();
-	COM_Init ();
-	Key_Init ();
+    //COM_Init ();
+    //Key_Init ();
 
-	Cache_Init_Commands ();
+    //Cache_Init_Commands ();
 
 	FS_InitFilesystem ();
 	NET_Init ();
 
-	Commands_For_Configs_Init ();
+    //Commands_For_Configs_Init ();
 	Browser_Init2();
-	ConfigManager_Init();
-	ResetBinds();
+    /*ConfigManager_Init();
+    ResetBinds();*/
 
 	i = COM_CheckParm("+cfg_load");
 
@@ -630,17 +630,18 @@ void Host_Init (int argc, char **argv, int default_memsize)
 
 	Sys_Init ();
 	Sys_CvarInit();
-	CM_Init ();
-	Mod_Init ();
+    //CM_Init ();
+    //Mod_Init ();
 
 #ifndef CLIENTONLY
 	SV_Init ();
 #endif
-	CL_Init ();
+    //CL_Init ();
+    Browser_Init();
 
 	Cvar_CleanUpTempVars ();
 
-	SYSINFO_Init();
+    //SYSINFO_Init();
 
 #ifdef WITH_TCL
 	if (!TCL_InterpLoaded())
@@ -669,7 +670,7 @@ void Host_Init (int argc, char **argv, int default_memsize)
 	}
 	
 	Hud_262LoadOnFirstStart();
-
+    /*
 	Com_Printf_State (PRINT_INFO, "Exe: "__DATE__" "__TIME__"\n");
 	Com_Printf_State (PRINT_INFO, "Hunk allocation: %4.1f MB\n", (float) host_memsize / (1024 * 1024));
 	Com_Printf("\n");
@@ -681,7 +682,7 @@ void Host_Init (int argc, char **argv, int default_memsize)
 	Com_Printf(Host_PrintBars("&c1e1ezQuake Initialized&r", 38));
 	Com_Printf("\n");
 	Com_Printf("Type /help to access the manual.\nUse /describe for help on commands.\n\n", VersionString());
-
+    */
 	if ((vf = FS_OpenVFS("autoexec.cfg", "rb", FS_ANY))) {
 		Cbuf_AddText ("exec autoexec.cfg\n\n");
 		VFS_CLOSE(vf);

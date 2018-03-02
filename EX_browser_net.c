@@ -555,6 +555,7 @@ void GetServerPing(server_data *serv)
 
 int GetServerPingsAndInfosProc(void * lpParameter)
 {
+    Com_Printf("GetServerPingsAndInfosProc\n");
 	unsigned int SB_Sources_Marked_Count(void);
 	extern cvar_t sb_listcache;
 	extern void SB_Serverlist_Serialize_f(void);
@@ -567,8 +568,8 @@ int GetServerPingsAndInfosProc(void * lpParameter)
 			// ensure some sources are marked, otherwise the refresh makes no sense
 			MarkDefaultSources();
 		}
-
 		SB_Sources_Update(true);
+        Com_Printf("fsfffff %d %d\n",serversn, sb_pings.integer);
 		if (useNewPing) {
 			// New Ping = UPD QW Packet ping using 2 threads (sender and receiver)
 			PingHosts(servers, serversn, sb_pings.integer);
@@ -600,9 +601,9 @@ int GetServerPingsAndInfosProc(void * lpParameter)
 		SB_Serverlist_Serialize_f();
 	}
 
-	if (sb_findroutes.integer && (full || !SB_PingTree_Built())) {
+    //if (sb_findroutes.integer && (full || !SB_PingTree_Built())) {
 		SB_PingTree_Build();
-	}
+    //}
 
 	serverinfo_lock = 0;
     return 0;

@@ -663,6 +663,7 @@ void SB_PingTree_Build(void)
 	SB_PingTree_Phase1();
 	// second longer phase is querying the proxies for their ping data + dijkstra algo
 	Sys_SemWait(&phase2thread_lock);
+    Com_Printf("Sys_SemWait(&phase2thread_lock)\n");
 	if (Sys_CreateDetachedThread(SB_PingTree_Phase2, NULL) < 0) {
 		Com_Printf("Failed to create SB_PingTree_Phase2 thread\n");
 	}

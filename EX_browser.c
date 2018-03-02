@@ -3339,6 +3339,7 @@ void Browser_Init2 (void)
 }
 
 void SB_ExecuteQueuedTriggers(void) {
+    Com_Printf("SB_ExecuteQueuedTriggers\n");
 	if (sb_queuedtriggers & SB_TRIGGER_REFRESHDONE) {
 		TP_ExecTrigger("f_sbrefreshdone");
 		sb_queuedtriggers &= ~SB_TRIGGER_REFRESHDONE;

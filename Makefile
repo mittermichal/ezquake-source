@@ -34,7 +34,7 @@ RMDIR ?= rm -rf
 MKDIR ?= mkdir -p
 XXD ?= xxd -i
 
-CFLAGS ?= -O2 -Wall -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast -Wno-strict-aliasing -Werror=strict-prototypes -Werror=old-style-definition -g -MMD $(INCLUDES)
+CFLAGS ?= -O2 -Wall -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast -Wno-strict-aliasing -Werror=strict-prototypes -Werror=old-style-definition -O0 -g -MMD $(INCLUDES)
 RCFLAGS ?=
 LDFLAGS ?=
 LIBS ?=
@@ -88,7 +88,7 @@ VER_DEFS += -DVERSION='"$(VER)"'
 SDL2_CFLAGS ?= $(shell sdl2-config --cflags)
 SDL2_LIBS ?= $(shell sdl2-config --libs)
 
-CFLAGS_c += $(BUILD_DEFS) $(VER_DEFS) $(PATH_DEFS) $(SDL2_CFLAGS) -DNDEBUG -DJSS_CAM -DUSE_PR2 -DWITH_NQPROGS -DUSE_SDL2 -DWITH_ZIP
+CFLAGS_c += $(BUILD_DEFS) $(VER_DEFS) $(PATH_DEFS) $(SDL2_CFLAGS) -DNDEBUG -DJSS_CAM -DUSE_PR2 -DWITH_NQPROGS -DUSE_SDL2 -DWITH_ZIP -DDEBUG -g
 LIBS_c += $(SDL2_LIBS)
 
 # built-in requirements

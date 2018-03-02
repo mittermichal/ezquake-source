@@ -48,6 +48,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "server.h"
 #include "pcre.h"
 
+#include "EX_browser.h"
 
 // BSD only defines FNDELAY:
 #ifndef O_NDELAY
@@ -298,47 +299,98 @@ double Sys_DoubleTime(void)
 	return (tp.tv_sec - secbase) + tp.tv_usec / 1000000.0;
 }
 #endif
+/*
+DWORD WINAPI FWD_proc(void *lpParameter)
+{
+    if (!lpParameter)
+        return 1;
+
+    //memset(&ps, 0, sizeof(ps));
+    //ps.params = *(fwd_params_t*)lpParameter;
+
+    Sys_Printf("connectbr by Kimi\n");
+
+    // init basic systems
+    Cbuf_Init();			// Command buffer init.
+    Cmd_Init();				// Register basic commands.
+    Cvar_Init();			// Variable system init.
+
+    // register basic cvars
+    developer		= Cvar_Get("developer",		"0", 0);
+    version			= Cvar_Get("*version",		QWFWD_VERSION, CVAR_READONLY | CVAR_SERVERINFO);
+    hostname		= Cvar_Get("hostname",		"unnamed qwfwd", CVAR_SERVERINFO);
+    maxclients		= Cvar_Get("maxclients",	"128", CVAR_SERVERINFO);
+
+    // register basic commands
+    Cmd_AddCommand("quit", Cmd_Quit_f);
+    Cmd_AddCommand("serverinfo", SV_Serverinfo_f);
+
+    // now exec our cfg
+    Cbuf_InsertText ("exec qwfwd.cfg\n");
+    Cbuf_Execute();
+
+    // init rest systems
+    Sys_DoubleTime();		// init time
+    Ban_Init();				// init bans, this will exec "qwfwd_listip.cfg" as well, so you don't have to put it in qwfwd.cfg
+    NET_Init();				// init network
+    FWD_Init();				// init peers
+    QRY_Init();				// init query
+
+    ps.initialized = true;
+
+    // Process command line arguments.
+    Cmd_StuffCmds(argc, argv);
+    Cbuf_Execute();
+
+    Sys_Printf("qwfwd: ready to rock at %s:%d\n", net_ip->string, net_port->integer);
+
+    while(!ps.wanttoexit)
+    {
+        Cbuf_Execute();			// Process console commands.
+        FWD_update_peers();		// Do basic proxy job.
+        QRY_Frame();			// Do query related job.
+        SV_CleanBansIPList();	// Periodically check is it time to remove some bans.
+    }
+
+    Cmd_DeInit();		// this is optional, but helps me check memory leaks
+    Cvar_DeInit();		// this is optional, but helps me check memory leaks
+
+    return 0;
+}
+*/
 
 int main(int argc, char **argv)
 {
-	double time, oldtime, newtime;
-	int i;
-
-#ifdef __linux__
-	extern void InitSig(void);
-	InitSig();
-#endif
-
-	COM_InitArgv (argc, argv);
-
-	// let me use -condebug C:\condebug.log before Quake FS init, so I get ALL messages before quake fully init
-	if ((i = COM_CheckParm("-condebug")) && i < COM_Argc() - 1) {
-		extern FILE *qconsole_log;
-		char *s = COM_Argv(i + 1);
-		if (*s != '-' && *s != '+')
-			qconsole_log = fopen(s, "a");
-	}
-
-	signal(SIGFPE, SIG_IGN);
-
-	// we need to check for -noconinput and -nostdout before Host_Init is called
-	if (!(noconinput = COM_CheckParm("-noconinput")))
-		fcntl(0, F_SETFL, fcntl (0, F_GETFL, 0) | FNDELAY);
-
-	if (COM_CheckParm("-nostdout"))
-		sys_nostdout.value = 1;
-
-	Host_Init (argc, argv, 32 * 1024 * 1024);
-
-	oldtime = Sys_DoubleTime ();
-	while (1) {
-		// find time spent rendering last frame
-		newtime = Sys_DoubleTime();
-		time = newtime - oldtime;
-		oldtime = newtime;
-
-		Host_Frame(time);
-	}
+    #ifdef __linux__
+           extern void InitSig(void);
+           InitSig();
+    #endif
+    COM_InitArgv (argc, argv);
+    signal(SIGFPE, SIG_IGN);
+    Host_Init (argc, argv, 32 * 1024 * 1024);
+    printf("test\n");
+    netadr_t addr;
+    /*addr.ip[0]=45;
+    addr.ip[1]=63;
+    addr.ip[2]=78;
+    addr.ip[3]=66;*/
+    addr.ip[0]=163;
+    addr.ip[1]=47;
+    addr.ip[2]=21;
+    addr.ip[3]=4;
+    addr.port=30000;
+    addr.type=NA_IP;
+    Reload_Sources();
+    Rebuild_Servers_List();
+    GetServerPingsAndInfos(true);
+    //Sys_MSleep(20000000);
+    //Sys_SemWait(&phase2thread_lock);
+    SB_PingTree_Shutdown();
+    //SB_ExecuteQueuedTriggers();
+    //Com_Printf("saasd\n");
+    //SB_PingTree_Build();
+    SB_PingTree_ConnectBestPath(&addr);
+    return 0;
 }
 
 void Sys_MakeCodeWriteable (unsigned long startaddr, unsigned long length) {

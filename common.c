@@ -1409,7 +1409,8 @@ unsigned Print_flags[16];
 int Print_current = 0;
 
 /* FIXME: Please make us thread safe! */
-void Com_Printf (char *fmt, ...) 
+
+void Com_Printf (char *fmt, ...)
 {
 	va_list argptr;
 	char msg[MAXPRINTMSG];
@@ -1423,11 +1424,11 @@ void Com_Printf (char *fmt, ...)
 		rd_print (msg);
 		return;
 	}
-
+    printf("%s", msg);
 	// also echo to debugging console
 	Sys_Printf ("%s", msg);
 
-	/* This is beyond retarded because it may cause RECURSION */
+    /*This is beyond retarded because it may cause RECURSION*/
 	// Triggers with mask 64
 	if (!(Print_flags[Print_current] & PR_TR_SKIP))
 		CL_SearchForReTriggers (msg, RE_PRINT_INTERNAL);
