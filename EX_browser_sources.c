@@ -417,7 +417,6 @@ int psourcesn;
 
 int Update_Multiple_Sources_Proc(void * lpParameter)
 {
-    Com_Printf("Update_Multiple_Sources_Proc\n");
     // get servers from master server
     SYSTEMTIME lt;
     char request[] = {'c', '\n', '\0'};
@@ -434,7 +433,6 @@ int Update_Multiple_Sources_Proc(void * lpParameter)
 
     GetLocalTime(&lt);
     d1 = lt.wSecond + 60*(lt.wMinute + 60*(lt.wHour + 24*(lt.wDay)));
-    Com_Printf("update file sources - this should be a flash\n");
     // update file sources - this should be a flash
     for (sourcenum = 0; sourcenum < psourcesn; sourcenum++)
         //if (psources[sourcenum]->checked)
@@ -456,7 +454,6 @@ int Update_Multiple_Sources_Proc(void * lpParameter)
                 total_masters++;
             }
         }
-    Com_Printf("psourcesn %d\n",psourcesn);
     // update master sources
     newsocket = UDP_OpenSocket(PORT_ANY);
 
@@ -478,7 +475,6 @@ int Update_Multiple_Sources_Proc(void * lpParameter)
             if (d1 > d2  &&  d1 < d2 + sb_sourcevalidity.value*60)
                 continue;
         }
-        //sb_masterretries.value=1;
 		// send trynum queries to master server
         for (trynum=0; trynum < sb_masterretries.value; trynum++)
         {
@@ -555,7 +551,6 @@ int Update_Multiple_Sources_Proc(void * lpParameter)
                 }
             }
 		}
-        Com_Printf("serversn: %d\n",serversn);
         // copy all servers to source list
         if (serversn > 0)
         {
@@ -621,7 +616,6 @@ void Update_Multiple_Sources(source_data *s[], int sn)
 
 void SB_Sources_Update(qbool full)
 {
-    Com_Printf("SB_Sources_Update\n");
 	source_full_update = full;
 	Update_Multiple_Sources(sources, sourcesn);
     if (rebuild_servers_list)

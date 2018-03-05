@@ -3298,20 +3298,22 @@ void Browser_Init (void)
 	Cvar_Register(&sb_ignore_proxy);
 	Cvar_ResetCurrentGroup();
 
-	Cmd_AddCommand("addserver", AddServer_f);
+    /*
+     * Cmd_AddCommand("addserver", AddServer_f);
 	Cmd_AddCommand("sb_refresh", GetServerPingsAndInfos_f);
 	Cmd_AddCommand("sb_pingsdump", SB_PingsDump_f);
 	Cmd_AddCommand("sb_sourceadd", SB_Source_Add_f);
 	Cmd_AddCommand("sb_sourcesupdate", SB_Sources_Update_f);
 	Cmd_AddCommand("sb_buildpingtree", SB_PingTree_Build);
-	Cmd_AddCommand("sb_proxygetpings", SB_ProxyGetPings_f);
+    Cmd_AddCommand("sb_proxygetpings", SB_ProxyGetPings_f);
+    */
 
 	if (sb_listcache.integer) {
 		SB_Serverlist_Unserialize_f();
 		SB_Proxylist_Unserialize_f();
 	}
 
-	qtvlist_init();
+    //qtvlist_init();
 }
 
 void Browser_Init2 (void)

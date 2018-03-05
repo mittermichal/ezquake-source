@@ -48,7 +48,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "server.h"
 #include "pcre.h"
 
-#include "EX_browser.h"
 
 // BSD only defines FNDELAY:
 #ifndef O_NDELAY
@@ -361,36 +360,7 @@ DWORD WINAPI FWD_proc(void *lpParameter)
 
 int main(int argc, char **argv)
 {
-    #ifdef __linux__
-           extern void InitSig(void);
-           InitSig();
-    #endif
-    COM_InitArgv (argc, argv);
-    signal(SIGFPE, SIG_IGN);
-    Host_Init (argc, argv, 32 * 1024 * 1024);
-    printf("test\n");
-    netadr_t addr;
-    /*addr.ip[0]=45;
-    addr.ip[1]=63;
-    addr.ip[2]=78;
-    addr.ip[3]=66;*/
-    addr.ip[0]=163;
-    addr.ip[1]=47;
-    addr.ip[2]=21;
-    addr.ip[3]=4;
-    addr.port=30000;
-    addr.type=NA_IP;
-    Reload_Sources();
-    Rebuild_Servers_List();
-    GetServerPingsAndInfos(true);
-    //Sys_MSleep(20000000);
-    //Sys_SemWait(&phase2thread_lock);
-    SB_PingTree_Shutdown();
-    //SB_ExecuteQueuedTriggers();
-    //Com_Printf("saasd\n");
-    //SB_PingTree_Build();
-    SB_PingTree_ConnectBestPath(&addr);
-    return 0;
+    return common_main(argc,argv);
 }
 
 void Sys_MakeCodeWriteable (unsigned long startaddr, unsigned long length) {

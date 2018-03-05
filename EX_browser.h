@@ -288,11 +288,15 @@ typedef void (* proxy_ping_report_callback) (netadr_t adr, short dist);
 
 void SB_PingTree_Init(void);
 void SB_PingTree_Shutdown(void);
+void SB_PingTree_Wait(void);
 
 qbool SB_PingTree_Built(void);
 void SB_PingTree_Build(void);
 qbool SB_PingTree_IsBuilding(void);
 void SB_PingTree_DumpPath(const netadr_t *addr);
+
+void SB_PingTree_DumpPathStr(char * str_addr);
+
 void SB_Proxy_QueryForPingList(const netadr_t *address, proxy_ping_report_callback callback);
 void SB_PingTree_ConnectBestPath(const netadr_t *addr);
 int SB_PingTree_GetPathLen(const netadr_t *addr);

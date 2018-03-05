@@ -478,7 +478,7 @@ static int FS_AddPak(char *pathto, char *pakname, searchpath_t *search, searchpa
 	vfs = search->funcs->OpenVFS(search->handle, &loc, "r");
 	if (!vfs)
 		return -1;
-	Com_Printf("Opened %s\n", pakfile);
+    //Com_Printf("Opened %s\n", pakfile);
 	handle = funcs->OpenNew (vfs, pakfile);
 	if (!handle) {
 		VFS_CLOSE(vfs);
@@ -750,12 +750,11 @@ void FS_InitFilesystemEx( qbool guess_cwd ) {
 	if (ev)
 		strlcpy(com_homedir, ev, sizeof(com_homedir));
 	else
-		com_homedir[0] = 0;
+        com_homedir[0] = 0;
 #endif
 
-	if (COM_CheckParm("-nohome"))
+    //if (COM_CheckParm("-nohome"))
 		com_homedir[0] = 0;
-
 	if (com_homedir[0])
 	{
 #ifdef _WIN32
@@ -809,7 +808,7 @@ void FS_InitFilesystemEx( qbool guess_cwd ) {
 void FS_InitFilesystem( void ) {
 	vfsfile_t *vfs;
 
-	FS_InitModuleFS();
+    //FS_InitModuleFS();
 	FS_InitFilesystemEx( false ); // first attempt, simplified
 	vfs = FS_OpenVFS("gfx.wad", "rb", FS_ANY); 
 	if (vfs) { // // we found gfx.wad, seems we have proper com_basedir
@@ -2061,15 +2060,15 @@ int FS_ZipGetNextFile (unzFile zip_file, sys_dirent *ent)
 
 void FS_InitModuleFS (void)
 {
-	Cmd_AddCommand("loadpak", FS_PakAdd_f);
+    Cmd_AddCommand("loadpak", FS_PakAdd_f);
 	Cmd_AddCommand("removepak", FS_PakRem_f);
 	Cmd_AddCommand("path", FS_Path_f);
 	Cmd_AddCommand("fs_restart", FS_ReloadPackFiles_f);
 	Cmd_AddCommand("fs_diff", FS_DiffFile_f); 		// VFS-FIXME <-- Only a debug function
 	Cmd_AddCommand("dir", FS_Dir_f);
 	Cmd_AddCommand("locate", FS_Locate_f);
-	Cmd_AddCommand("fs_search", FS_ListFiles_f);
-	Cvar_Register(&fs_cache);
+    Cmd_AddCommand("fs_search", FS_ListFiles_f);
+    Cvar_Register(&fs_cache);
 	Com_Printf("Initialising quake VFS filesystem\n");
 }
 

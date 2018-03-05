@@ -566,7 +566,7 @@ void Cache_Init(void)
 
 #ifndef WITH_DP_MEM
 	// If DP mem is used then we can't add commands untill Cmd_Init() executed.
-	Cache_Init_Commands();
+    //Cache_Init_Commands();
 #endif
 }
 

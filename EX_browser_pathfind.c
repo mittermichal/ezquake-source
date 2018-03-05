@@ -213,19 +213,34 @@ static qbool SB_PingTree_IsProxyFiltered(const server_data *data)
 {
 	if (!data->qwfwd) {
 		return false;
-	}
-	else if (sb_ignore_proxy.string[0] == '\0') {
-		return false;
-	}
-	else {
-		char ip_str[32];
-		const byte *ip = data->address.ip;
-		int port = (int) ntohs(data->address.port);
-		
-		snprintf(&ip_str[0], sizeof(ip_str), "%d.%d.%d.%d:%d", ip[0], ip[1], ip[2], ip[3], port);
+    }
+    else {
+        /*int i,key=-1;
+        for (i=0;i<MAX_KEYS;i++) {
+            if (data->keys[i]!=0 && strstr(data->keys[i],"version")!=NULL) {
+                key=i;
+                break;
+            }
+        }
+        if (key==-1) {
+            return true;
+        }
+        if (strstr(data->values[key],"qwfwd 1.1")==NULL && strstr(data->values[key],"qwfwd 1.2")==NULL) {
+            return true;
+        }*/
+        if (sb_ignore_proxy.string[0] == '\0') {
+            return false;
+        }
+        else {
+            char ip_str[32];
+            const byte *ip = data->address.ip;
+            int port = (int) ntohs(data->address.port);
 
-		return strstr(sb_ignore_proxy.string, ip_str) != NULL;
-	}
+            snprintf(&ip_str[0], sizeof(ip_str), "%d.%d.%d.%d:%d", ip[0], ip[1], ip[2], ip[3], port);
+
+            return strstr(sb_ignore_proxy.string, ip_str) != NULL;
+        }
+    }
 }
 
 static nodeid_t SB_PingTree_AddServer(const server_data *data)
@@ -662,11 +677,24 @@ void SB_PingTree_Build(void)
 	// first quick phase is initialization + quick read of data from the server browser
 	SB_PingTree_Phase1();
 	// second longer phase is querying the proxies for their ping data + dijkstra algo
-	Sys_SemWait(&phase2thread_lock);
-    Com_Printf("Sys_SemWait(&phase2thread_lock)\n");
+    //Sys_SemWait(&phase2thread_lock);
 	if (Sys_CreateDetachedThread(SB_PingTree_Phase2, NULL) < 0) {
 		Com_Printf("Failed to create SB_PingTree_Phase2 thread\n");
 	}
+}
+
+void SB_PingTree_DumpPathStr(char*str_addr)
+{
+    netadr_t adr;
+    if (!NET_StringToAdr(str_addr, &adr)) {
+        Com_Printf("Invalid address\n");
+        return;
+    }
+
+    if (adr.port == 0)
+        adr.port = htons(27500);
+
+    SB_PingTree_DumpPath(&adr);
 }
 
 /// Prints the shortest path to given IP address
@@ -674,20 +702,35 @@ void SB_PingTree_DumpPath(const netadr_t *addr)
 {
 	nodeid_t target = SB_PingTree_FindIp(SB_Netaddr2Ipaddr(addr));
 
+
 	if (target == INVALID_NODE) {
 		Com_Printf("No route found to given host\n");
 	}
 	else {
 		nodeid_t current = target;
-
+        nodeid_t route[50];
+        int route_i = 0;
 		Com_Printf("Shortest path length: %d ms\nRoute: \n", ping_nodes[current].dist);
 		while (current != startnode_id && current != INVALID_NODE) {
 			byte *ip = ping_nodes[current].ipaddr.data;
 			Com_Printf("%4d ms  %d.%d.%d.%d:%d\n", ping_nodes[current].dist, 
 				ip[0], ip[1], ip[2], ip[3],	ntohs(ping_nodes[current].proxport));
+            route[route_i++]=current;
 			current = ping_nodes[current].prev;
 		}
 		Com_Printf("%4d ms  localhost (your machine)\n", 0);
+        int i;
+        Com_Printf("setu prx ");
+        for (i=route_i-2;i>=0;i--) {
+            byte *ip = ping_nodes[route[i]].ipaddr.data;
+            Com_Printf("%d.%d.%d.%d:%d",
+                ip[0], ip[1], ip[2], ip[3],	(i>0)?ntohs(ping_nodes[route[i]].proxport):ntohs(addr->port));
+            if (i>0) Com_Printf("@");
+        }
+        byte *ip = ping_nodes[route[route_i-1]].ipaddr.data;
+        Com_Printf(";connect %d.%d.%d.%d:%d\n",
+            ip[0], ip[1], ip[2], ip[3],	ntohs(ping_nodes[route[route_i-1]].proxport));
+
 	}
 }
 
@@ -848,4 +891,9 @@ void SB_PingTree_Shutdown(void)
 {
 	Sys_SemWait(&phase2thread_lock);
 	Sys_SemDestroy(&phase2thread_lock);
+}
+
+void SB_PingTree_Wait(void)
+{
+    Sys_SemWait(&phase2thread_lock);
 }

@@ -565,11 +565,11 @@ void Startup_Place(void)
 
 void Host_Init (int argc, char **argv, int default_memsize)
 {
-	vfsfile_t *vf;
-	cvar_t *v;
-	char cfg[MAX_PATH] = {0};
-	int i;
-	char *cfg_name;
+    //vfsfile_t *vf;
+    cvar_t *v;
+    //char cfg[MAX_PATH] = {0};
+    //int i;
+    //char *cfg_name;
 
 	COM_InitArgv (argc, argv);
 	COM_StoreOriginalCmdline(argc, argv);
@@ -588,22 +588,24 @@ void Host_Init (int argc, char **argv, int default_memsize)
 	// before any cvar definitions
 	TCL_InterpInit ();
 #endif
-	Cbuf_Init ();
-	Cmd_Init ();
-	Cvar_Init ();
+    //Cbuf_Init ();
+    //Cmd_Init ();
+    //Cvar_Init ();
     //COM_Init ();
     //Key_Init ();
 
     //Cache_Init_Commands ();
 
-	FS_InitFilesystem ();
+    FS_InitFilesystem ();
 	NET_Init ();
 
     //Commands_For_Configs_Init ();
 	Browser_Init2();
+    SB_RootInit();
     /*ConfigManager_Init();
     ResetBinds();*/
 
+    /*
 	i = COM_CheckParm("+cfg_load");
 
 	if (i && (i + 1 < COM_Argc())) {
@@ -618,9 +620,9 @@ void Host_Init (int argc, char **argv, int default_memsize)
 	Cbuf_Execute();
 
 	Cbuf_AddEarlyCommands ();
-	Cbuf_Execute ();
+    Cbuf_Execute ();*/
 
-	Con_Init ();
+    //Con_Init ();
 	NET_InitClient ();
 	Netchan_Init ();
 
@@ -629,12 +631,12 @@ void Host_Init (int argc, char **argv, int default_memsize)
 #endif
 
 	Sys_Init ();
-	Sys_CvarInit();
+    //Sys_CvarInit();
     //CM_Init ();
     //Mod_Init ();
 
 #ifndef CLIENTONLY
-	SV_Init ();
+    //SV_Init ();
 #endif
     //CL_Init ();
     Browser_Init();
@@ -648,7 +650,7 @@ void Host_Init (int argc, char **argv, int default_memsize)
 		Com_Printf_State (PRINT_FAIL, "Could not load "TCL_LIB_NAME", embedded Tcl disabled\n");
 #endif
 
-	Hunk_AllocName (0, "-HOST_HUNKLEVEL-");
+    //Hunk_AllocName (0, "-HOST_HUNKLEVEL-");
 	host_hunklevel = Hunk_LowMark ();
 
 	host_initialized = true;
@@ -683,19 +685,19 @@ void Host_Init (int argc, char **argv, int default_memsize)
 	Com_Printf("\n");
 	Com_Printf("Type /help to access the manual.\nUse /describe for help on commands.\n\n", VersionString());
     */
-	if ((vf = FS_OpenVFS("autoexec.cfg", "rb", FS_ANY))) {
+    /*if ((vf = FS_OpenVFS("autoexec.cfg", "rb", FS_ANY))) {
 		Cbuf_AddText ("exec autoexec.cfg\n\n");
 		VFS_CLOSE(vf);
-	}
+    }*/
 
-	Cmd_StuffCmds_f ();		// process command line arguments
-	Cbuf_AddText ("cl_warncmd 1\n");
+    //Cmd_StuffCmds_f ();		// process command line arguments
+    //Cbuf_AddText ("cl_warncmd 1\n");
 
 	Sys_CheckQWProtocolHandler();
 
 	// Check if a qtv/demo file is specified as the first argument, in that case play that
 	// otherwise, do some more checks of what to show at startup.
-	{
+    /*{
 		char cmd[1024] = {0};
 
 		if (COM_CheckArgsForPlayableFiles(cmd, sizeof(cmd)))
@@ -706,7 +708,7 @@ void Host_Init (int argc, char **argv, int default_memsize)
 		{
 			Startup_Place();
 		}
-	}
+    }*/
 
 	host_everything_loaded = true;
 }

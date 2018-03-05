@@ -82,7 +82,8 @@ typedef unsigned char byte;
 
 //============================================================================
 
-#define	MINIMUM_MEMORY		0x550000
+//#define	MINIMUM_MEMORY		0x550000
+#define	MINIMUM_MEMORY		0
 
 #define	MAX_QPATH			64		// max length of a quake game pathname
 #define	MAX_OSPATH			260		// max length of a filesystem pathname

@@ -1182,87 +1182,20 @@ qbool WinCheckQWURL(void)
 //
 // Application entry point.
 //
+
+int common_main(int argc, char **argv);
+
+int main(int argc, char **argv)
+{
+    printf("test main\n");
+    return common_main(argc,argv);
+}
+
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) 
 {
-	int memsize, i;
-	double time, oldtime, newtime;
-	MEMORYSTATUS lpBuffer;
-
-	global_hInstance = hInstance;
-
-	// Make sure we link with comctl32.lib to get XP themed buttons if they're available.
-	InitCommonControls();
-
-	WinCheckOSInfo();
-
+    printf("test\n");
 	ParseCommandLine(lpCmdLine);
-
-	// Check if we're the registered QW url protocol handler.
-	if (!WinCheckQWURL() && ((argc + 3) < MAX_NUM_ARGVS))
-	{
-		// User doesn't want to be bothered again.
-		argv[argc++] = "+cl_verify_qwprotocol";
-		argv[argc++] = "0";
-	}
-
-	// We need to check some parms before Host_Init is called
-	COM_InitArgv (argc, argv);
-
-	// Let me use -condebug C:\condebug.log before Quake FS init, so I get ALL messages before quake fully init
-	if ((i = COM_CheckParm("-condebug")) && i < COM_Argc() - 1) 
-	{
-		extern FILE *qconsole_log;
-		char *s = COM_Argv(i + 1);
-		if (*s != '-' && *s != '+')
-			qconsole_log = fopen(s, "a");
-	}
-
-	Sys_DisableScreenSaving();
-
-	// Take the greater of all the available memory or half the total memory,
-	// but at least 8 Mb and no more than 32 Mb, unless they explicitly request otherwise
-	lpBuffer.dwLength = sizeof(MEMORYSTATUS);
-	GlobalMemoryStatus (&lpBuffer);
-
-	// Maximum of 2GiB to work around signed int.
-	if(lpBuffer.dwAvailPhys > 0x7FFFFFFF)
-		lpBuffer.dwAvailPhys = 0x7FFFFFFF;
-
-	if(lpBuffer.dwTotalPhys > 0x7FFFFFFF)
-		lpBuffer.dwTotalPhys = 0x7FFFFFFF;
-
-	memsize = lpBuffer.dwAvailPhys;
-
-	if (memsize < MINIMUM_WIN_MEMORY)
-		memsize = MINIMUM_WIN_MEMORY;
-
-	if (memsize < (lpBuffer.dwTotalPhys >> 1))
-		memsize = lpBuffer.dwTotalPhys >> 1;
-
-	if (memsize > MAXIMUM_WIN_MEMORY)
-		memsize = MAXIMUM_WIN_MEMORY;
-
-	tevent = CreateEvent (NULL, FALSE, FALSE, NULL);
-	if (!tevent)
-		Sys_Error ("Couldn't create event");
-
-	Sys_Init_();
-
-	Sys_Printf ("Host_Init\n");
-	Host_Init (argc, argv, memsize);
-
-	oldtime = Sys_DoubleTime ();
-
-    // Main window message loop.
-	while (1) 
-	{
-		newtime = Sys_DoubleTime ();
-		time = newtime - oldtime;
-		Host_Frame (time);
-		oldtime = newtime;
-
-	}
-    return TRUE;	/* return success of application */
+    return common_main(argc,argv);
 }
 
 void MakeDirent(sys_dirent *ent, WIN32_FIND_DATA *data)

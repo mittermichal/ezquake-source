@@ -139,6 +139,7 @@ RCFLAGS_c += -DREVISION=$(REV) -DVERSION='\"$(VER)\"'
 ### Object Files ###
 
 COMMON_OBJS := \
+    connectbr.o         \
     cmodel.o		\
     cmd.o		\
     com_msg.o		\
@@ -335,12 +336,20 @@ else
     CFLAGS += -DCLIENTONLY
 endif
 
+#OBJS_c := \
+#    $(COMMON_OBJS) \
+#    EX_browser_net.o \
+#    EX_browser_pathfind.o \
+#    EX_browser_ping.o \
+#    EX_browser_qtvlist.o \
+#    EX_browser_sources.o
+
 ifdef CONFIG_WINDOWS
     OBJS_c += \
 	movie_avi.o \
 	localtime_win.o \
-	sys_win.o \
-	winquake.o
+        sys_win.o \
+        winquake.o
     LIBS_c += -lopengl32 -lws2_32 -lwinmm -lpthread
 else
     OBJS_c += \
@@ -378,9 +387,9 @@ endif
 ### Targets ###
 
 ifdef CONFIG_WINDOWS
-    TARG_c := ezquake.exe
+    TARG_c := connectbr.exe
 else
-    TARG_c := ezquake-$(LSYS)-$(CPU)
+    TARG_c := connectbr
 endif
 
 all: $(TARG_c)

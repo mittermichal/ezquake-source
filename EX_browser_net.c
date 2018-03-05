@@ -555,7 +555,6 @@ void GetServerPing(server_data *serv)
 
 int GetServerPingsAndInfosProc(void * lpParameter)
 {
-    Com_Printf("GetServerPingsAndInfosProc\n");
 	unsigned int SB_Sources_Marked_Count(void);
 	extern cvar_t sb_listcache;
 	extern void SB_Serverlist_Serialize_f(void);
@@ -569,7 +568,7 @@ int GetServerPingsAndInfosProc(void * lpParameter)
 			MarkDefaultSources();
 		}
 		SB_Sources_Update(true);
-        Com_Printf("fsfffff %d %d\n",serversn, sb_pings.integer);
+        //Com_Printf("Got %d servers from sources\n",serversn);
 		if (useNewPing) {
 			// New Ping = UPD QW Packet ping using 2 threads (sender and receiver)
 			PingHosts(servers, serversn, sb_pings.integer);
