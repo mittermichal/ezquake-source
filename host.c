@@ -597,7 +597,7 @@ void Host_Init (int argc, char **argv, int default_memsize)
     //Cache_Init_Commands ();
 
     FS_InitFilesystem ();
-	NET_Init ();
+    //NET_Init ();
 
     //Commands_For_Configs_Init ();
 	Browser_Init2();
@@ -623,14 +623,14 @@ void Host_Init (int argc, char **argv, int default_memsize)
     Cbuf_Execute ();*/
 
     //Con_Init ();
-	NET_InitClient ();
-	Netchan_Init ();
+    //NET_InitClient ();
+    //Netchan_Init ();
 
 #if (!defined WITH_PNG_STATIC || !defined WITH_JPEG_STATIC || defined WITH_MP3_PLAYER)
-	QLib_Init();
+    //QLib_Init();
 #endif
 
-	Sys_Init ();
+    //Sys_Init ();
     //Sys_CvarInit();
     //CM_Init ();
     //Mod_Init ();
@@ -671,7 +671,7 @@ void Host_Init (int argc, char **argv, int default_memsize)
 		Cvar_Set(v, val);
 	}
 	
-	Hud_262LoadOnFirstStart();
+    //Hud_262LoadOnFirstStart();
     /*
 	Com_Printf_State (PRINT_INFO, "Exe: "__DATE__" "__TIME__"\n");
 	Com_Printf_State (PRINT_INFO, "Hunk allocation: %4.1f MB\n", (float) host_memsize / (1024 * 1024));
@@ -693,7 +693,7 @@ void Host_Init (int argc, char **argv, int default_memsize)
     //Cmd_StuffCmds_f ();		// process command line arguments
     //Cbuf_AddText ("cl_warncmd 1\n");
 
-	Sys_CheckQWProtocolHandler();
+    //Sys_CheckQWProtocolHandler();
 
 	// Check if a qtv/demo file is specified as the first argument, in that case play that
 	// otherwise, do some more checks of what to show at startup.
