@@ -693,7 +693,7 @@ void SB_PingTree_DumpPathStr(char*str_addr)
     }
 
     if (adr.port == 0)
-        adr.port = htons(27500);
+        adr.port = htons(27960);
 
     SB_PingTree_DumpPath(&adr);
 }
