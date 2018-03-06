@@ -1255,7 +1255,7 @@ void NET_GetLocalAddress (int socket, netadr_t *out)
 		Com_Printf_State (PRINT_OK, "IP address %s\n", NET_AdrToString (*out));
 #endif
 }
-/*
+
 void NET_Init (void)
 {
 #ifdef _WIN32
@@ -1267,7 +1267,7 @@ void NET_Init (void)
 	if (r)
 		Sys_Error ("Winsock initialization failed.");
 #endif
-
+/*
 	// init the message buffer
 	SZ_Init (&net_message, net_message_buffer, sizeof(net_message_buffer));
 
@@ -1294,8 +1294,9 @@ void NET_Init (void)
 	// As serveronly we do it here.
 	NET_InitServer();
 #endif
-}
 */
+}
+
 /*
 void NET_Shutdown (void)
 {
