@@ -1190,15 +1190,8 @@ qbool WinCheckQWURL(void)
 
 int common_main(int argc, char **argv);
 
-int main(int argc, char **argv)
-{
-    printf("test main\n");
-    return common_main(argc,argv);
-}
-
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-    printf("test\n");
     ParseCommandLine(lpCmdLine);
     return common_main(argc,argv);
 }
