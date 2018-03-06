@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 int TP_CategorizeMessage (const char *s, int *offset);
 
 /************************************** General Utils **************************************/
-
+/*
 void str_align_right (char *target, size_t size, const char *source, size_t length)
 {
 	if (length > size - 1)
@@ -168,7 +168,7 @@ byte* StringToRGB(char *s)
 	StringToRGB_W(s, rgb);
 	return rgb;
 }
-
+*/
 /*
    float f[10];
    int size = sizeof(f)/sizeof(f[0]);
@@ -177,6 +177,7 @@ byte* StringToRGB(char *s)
 // "size" will contain count of parsed floats
 ParseFloats("1.0 2.0 999 5", f, &size);
 */
+/*
 int ParseFloats(char *s, float *f, int *f_size) {
 	int i, argc;
 	tokenizecontext_t ctx;
@@ -346,9 +347,9 @@ int HexToInt(char c)
 	else
 		return -1;
 }
-
+*/
 /************************************** File Utils **************************************/
-
+/*
 int Util_Extend_Filename(char *filename, char **ext) {
 	char extendedname[1024], **s;
 	int i, offset;
@@ -445,9 +446,9 @@ char *Util_Invalid_Filename_Msg(char *s) {
 	snprintf(err, sizeof(err), "%s is not a valid filename (?*:<>\" are illegal characters)\n", s);
 	return err;
 }
-
+*/
 /************************************* Player Utils *************************************/
-
+/*
 static int Player_Compare (const void *p1, const void *p2) {
 	player_info_t *player1, *player2;
 	int team_comp;
@@ -667,9 +668,9 @@ int Player_GetSlot(char *arg)
 
 	return PLAYER_NUM_NOMATCH;
 }
-
+*/
 /********************************** Nick completion related ****************************************/
-
+/*
 const char disallowed_in_nick[] = {'\n', '\f', '\\', '/', '\"', ' ' , ';'};
 
 // yet another utility, there also exist at least one similar function Player_StripNameColor(), but not the same
@@ -704,7 +705,8 @@ void RemoveColors (char *name, size_t len)
 	if (!name[0])
 		strlcpy (name, "_", len);
 }
-
+*/
+/*
 qbool FindBestNick (const char *nick, int flags, char *result, size_t result_len)
 {
 	int i, bestplayer = -1, best = 999999;
@@ -750,7 +752,7 @@ qbool FindBestNick (const char *nick, int flags, char *result, size_t result_len
 
 	return QTV_FindBestNick (nick, result, result_len);
 }
-
+*/
 
 /********************************** Clipboard ****************************************/
 
@@ -817,7 +819,7 @@ char *ReadFromClipboard(void)
 
 
 /********************************** String Utils ****************************************/
-
+/*
 qbool Util_F_Match (const char *_msg, char *f_request) {
 	int offset, i, status, flags;
 	char *s, *msg;
@@ -851,7 +853,7 @@ qbool Util_F_Match (const char *_msg, char *f_request) {
 	Q_free(msg);
 	return true;
 }
-
+*/
 
 void Replace_In_String (char *src, int n, char delim, int num_args, ...)
 {
@@ -1111,7 +1113,7 @@ void CharsToWhite(char* start, char* end)
 }
 
 /********************************** TF Utils ****************************************/
-
+/*
 static char *Utils_TF_ColorToTeam_Failsafe(int color) {
 	int i, j, teamcounts[8], numteamsseen = 0, best = -1;
 	char *teams[MAX_CLIENTS];
@@ -1180,7 +1182,7 @@ int Utils_TF_TeamToColor(char *team) {
 		return 11;
 	return 0;
 }
-
+*/
 /********************************** REGEXP ****************************************/
 
 qbool Utils_RegExpMatch(char *regexp, char *matchstring)

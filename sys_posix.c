@@ -113,8 +113,8 @@ void Sys_Error(char *error, ...)
 	vsnprintf (string, sizeof(string), error, argptr);
 	va_end (argptr);
 	fprintf(stderr, "Error: %s\n", string);
-	if (qconsole_log)
-		fprintf(qconsole_log, "Error: %s\n", string);
+    //if (qconsole_log)
+    //	fprintf(qconsole_log, "Error: %s\n", string);
 
 	Host_Shutdown ();
 	exit(1);
@@ -160,7 +160,7 @@ int Sys_FileSizeTime(char *path, int *time1)
 Sys_listdir
 ================
 */
-
+/*
 dir_t Sys_listdir (const char *path, const char *ext, int sort_type)
 {
 	static file_t list[MAX_DIRFILES];
@@ -250,7 +250,7 @@ dir_t Sys_listdir (const char *path, const char *ext, int sort_type)
 
 	return dir;
 }
-
+*/
 int Sys_chdir(const char *path)
 {
 	return (chdir(path) == 0);

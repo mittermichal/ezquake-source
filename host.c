@@ -76,7 +76,7 @@ unsigned long long	SYSINFO_memory = 0;
 int					SYSINFO_MHz = 0;
 char				*SYSINFO_processor_description = NULL;
 char				*SYSINFO_3D_description        = NULL;
-
+/*
 #ifdef _WIN32
 typedef BOOL (WINAPI *PGMSE)(LPMEMORYSTATUSEX);
 
@@ -167,6 +167,7 @@ void SYSINFO_Init(void)
 	}
 }
 #elif defined(__linux__)
+
 void SYSINFO_Init(void)
 {
 	// disconnect: which way is best(MEM/CPU-MHZ/CPU-MODEL)?
@@ -258,7 +259,7 @@ void SYSINFO_Init(void)
 	int cpu_frequency_value;
 	size_t length = sizeof(memsize_value);
 	char cpu_brand_string[100] = {0};
-	size_t cpu_brand_string_len = sizeof(cpu_brand_string) - 1; /* Don't trust Apple, make sure its NULL terminated */
+    size_t cpu_brand_string_len = sizeof(cpu_brand_string) - 1;
 
 	extern const char *gl_renderer;
 
@@ -372,7 +373,7 @@ void SYSINFO_Init(void)
 	strlcpy(f_system_string, "Unknown system.", sizeof(f_system_string));
 }
 #endif
-
+*/
 void Host_Abort (void)
 {
 	longjmp (host_abort, 1);
@@ -381,11 +382,11 @@ void Host_Abort (void)
 void Host_EndGame (void)
 {
 #ifndef CLIENTONLY
-	SV_Shutdown ("Server was killed");
+    //SV_Shutdown ("Server was killed");
 #endif
-	CL_Disconnect ();
+    //CL_Disconnect ();
 	// clear disconnect messages from loopback
-	NET_ClearLoopback ();
+    //NET_ClearLoopback ();
 }
 
 //This shuts down both the client and server
@@ -408,9 +409,9 @@ void Host_Error (char *error, ...)
 	Com_Printf ("===========================\n\n");
 
 #ifndef CLIENTONLY
-	SV_Shutdown (va("server crashed: %s\n", string));
+    //SV_Shutdown (va("server crashed: %s\n", string));
 #endif
-	CL_Disconnect ();
+    //CL_Disconnect ();
 
 	if (!host_initialized)
 		Sys_Error ("Host_Error: %s", string);
@@ -444,20 +445,22 @@ void Host_InitMemory (int memsize)
 
 //Free hunk memory up to host_hunklevel
 //Can only be called when changing levels!
+/*
 void Host_ClearMemory (void)
 {
 	// FIXME, move to CL_ClearState
 	D_FlushCaches ();
 
 	// FIXME, move to CL_ClearState
-	Mod_ClearAll ();
+    Mod_ClearAll ();
 
 	CM_InvalidateMap ();
 
 	// any data previously allocated on hunk is no longer valid
 	Hunk_FreeToLowMark (host_hunklevel);
 }
-
+*/
+/*
 void Host_Frame (double time)
 {
 	if (setjmp (host_abort))
@@ -467,7 +470,7 @@ void Host_Frame (double time)
 
 	CL_Frame (time);	// will also call SV_Frame
 }
-
+*/
 char *Host_PrintBars(char *s, int len)
 {
 	static char temp[512];
@@ -517,11 +520,11 @@ extern void LoadConfig_f(void);
 
 
 	//disconnect: fix it if i forgot something
-#ifndef CLIENTONLY
+/*#ifndef CLIENTONLY
 	Cmd_AddCommand ("floodprot", SV_Floodprot_f);
 	Cmd_AddCommand ("floodprotmsg", SV_Floodprotmsg_f);
-#endif
-	Cmd_AddCommand ("msg_trigger", TP_MsgTrigger_f);
+#endif*/
+    /*Cmd_AddCommand ("msg_trigger", TP_MsgTrigger_f);
 	Cmd_AddCommand ("filter", TP_MsgFilter_f);
 	Cmd_AddCommand ("tp_took", TP_Took_f);
 	Cmd_AddCommand ("tp_pickup", TP_Pickup_f);
@@ -536,9 +539,9 @@ extern void LoadConfig_f(void);
 	Cmd_AddCommand ("allskins", Skin_AllSkins_f);
 
 	Cmd_AddCommand ("sb_sourceunmarkall", SB_SourceUnmarkAll);
-	Cmd_AddCommand ("sb_sourcemark", SB_SourceMark);
+    Cmd_AddCommand ("sb_sourcemark", SB_SourceMark);*/
 }
-
+/*
 void Startup_Place(void)
 {
     extern cvar_t cl_onload;
@@ -562,7 +565,7 @@ void Startup_Place(void)
 		Cbuf_AddText (va ("%s\n", cl_onload.string));
 	}
 }
-
+*/
 void Host_Init (int argc, char **argv, int default_memsize)
 {
     //vfsfile_t *vf;
@@ -727,34 +730,34 @@ void Host_Shutdown (void)
 
 	// on low-end systems quit process may last long time (was about 1 minute for me on old compo),
 	// at the same time may repeats repeats repeats some sounds, trying preventing this
-	S_StopAllSounds();
-	S_Update (vec3_origin, vec3_origin, vec3_origin, vec3_origin);
+    //S_StopAllSounds();
+    //S_Update (vec3_origin, vec3_origin, vec3_origin, vec3_origin);
 
 #ifndef CLIENTONLY
-	SV_Shutdown ("Server quit\n");
+    //SV_Shutdown ("Server quit\n");
 #endif
 
 #if (!defined WITH_PNG_STATIC && !defined WITH_JPEG_STATIC)
-	QLib_Shutdown();
+    //QLib_Shutdown();
 #endif
 
-	CL_Shutdown ();
-	NET_Shutdown ();
-	Con_Shutdown();
+    //CL_Shutdown ();
+    //NET_Shutdown ();
+    //Con_Shutdown();
 #ifdef WITH_TCL
-	TCL_Shutdown ();
+    //TCL_Shutdown ();
 #endif
-	qtvlist_deinit();
+    //qtvlist_deinit();
 }
 
 void Host_Quit (void)
 {
 	// execute user's trigger
-	TP_ExecTrigger ("f_exit");
+    //TP_ExecTrigger ("f_exit");
 	Cbuf_Execute();
 	
 	// save config (conditional)
-	Config_QuitSave();
+    //Config_QuitSave();
 
 	// turn off
 	Host_Shutdown ();

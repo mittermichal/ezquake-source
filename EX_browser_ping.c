@@ -818,7 +818,7 @@ int sb_test_min, sb_test_max, sb_test_avg, sb_test_dev;
 double last_stats_time;
 
 server_data *sb_test_server = NULL;
-
+/*
 void SB_Test_GetPackets(void)
 {
     struct sockaddr_in dest,from;
@@ -874,10 +874,11 @@ void SB_Test_GetPackets(void)
     }
 
 }
-
+*/
+/*
 void SB_Test_SendPacket(void)
 {
-    struct sockaddr_in dest/*,from*/;
+    struct sockaddr_in dest;
 //    int bread,
     int datasize;
 //   int fromlen = sizeof(from);
@@ -925,7 +926,8 @@ void SB_Test_SendPacket(void)
     sendto(sock, (char *) icmp_packet.data,datasize,0,(struct sockaddr*)&dest,
                     sizeof(dest));
 }
-
+*/
+/*
 void SB_Test_CalcNet(void)
 {
     int i, a;
@@ -1030,7 +1032,8 @@ void SB_Test_CalcNet(void)
     sb_test_avg = min(sb_test_avg, 999);
     sb_test_dev = min(sb_test_dev, 99);
 }
-
+*/
+/*
 void SB_Test_Draw(void)
 {
     int x, y, w, h;
@@ -1053,7 +1056,8 @@ void SB_Test_Draw(void)
                sb_test_min, sb_test_avg, sb_test_max, sb_test_dev,
                x, y, -1, -1, 0, 0);
 }
-
+*/
+/*
 void SB_Test_Init(char *address)
 {
     int i;
@@ -1074,7 +1078,8 @@ void SB_Test_Init(char *address)
     last_stats_time = -999;
     sb_test_starttime = cls.realtime*1000;
 }
-
+*/
+/*
 void SB_Test_Change(char *address)
 {
     unsigned int addr = inet_addr(address);
@@ -1088,7 +1093,8 @@ void SB_Test_Change(char *address)
         sb_test_starttime = cls.realtime*1000;
     }
 }
-
+*/
+/*
 void SB_Test_Frame(void)
 {
     // receive answers
@@ -1103,3 +1109,4 @@ void SB_Test_Frame(void)
     // draw statistics
     SB_Test_Draw();
 }
+*/

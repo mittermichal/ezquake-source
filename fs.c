@@ -385,12 +385,12 @@ static byte *FS_LoadFile (const char *path, int usehunk, int *file_length)
 
 	((byte *)buf)[len] = 0;
 
-	Draw_BeginDisc ();
+    //Draw_BeginDisc ();
 
 	VFS_READ(f, buf, len, &err);
 	VFS_CLOSE(f);
 
-	Draw_EndDisc ();
+    //Draw_EndDisc ();
 
 	return buf;
 }
@@ -428,7 +428,7 @@ void FS_SetUserDirectory (char *dir, char *type) {
 
 	strlcpy(tmp, com_gamedirfile, sizeof(tmp)); // save
 	com_gamedirfile[0]='\0'; // force reread
-	FS_SetGamedir(tmp, false); // restore
+    //FS_SetGamedir(tmp, false); // restore
 }
 
 // ==========
@@ -584,6 +584,7 @@ void FS_AddUserDirectory ( char *dir ) {
 void Draw_InitConback(void);
 
 // Sets the gamedir and path to a different directory.
+/*
 void FS_SetGamedir (char *dir, qbool force)
 {
 	searchpath_t  *next;
@@ -630,6 +631,7 @@ void FS_SetGamedir (char *dir, qbool force)
 
 	FS_AddUserDirectory(dir);
 }
+*/
 
 char *FS_NextPath (char *prevpath)
 {
@@ -785,7 +787,7 @@ void FS_InitFilesystemEx( qbool guess_cwd ) {
 	while((i = COM_CheckParmOffset ("-data", i))) {
 		if (i && i < COM_Argc()-1) {
 			char tmp_path[MAX_OSPATH];
-			snprintf(&tmp_path[0], sizeof(tmp_path), "%s%s", com_basedir, COM_Argv(i+1)); /* FIXME: No slash?? Intentional?? */
+            snprintf(&tmp_path[0], sizeof(tmp_path), "%s%s", com_basedir, COM_Argv(i+1));
 			FS_AddGameDirectory(tmp_path, FS_LOAD_FILE_ALL);
 		}
 		i++;
@@ -799,10 +801,10 @@ void FS_InitFilesystemEx( qbool guess_cwd ) {
 		FS_SetUserDirectory(COM_Argv(i+1), COM_Argv(i+2));
 
 	// the user might want to override default game directory
-	if (!(i = COM_CheckParm ("-game")))
+    /*if (!(i = COM_CheckParm ("-game")))
 		i = COM_CheckParm ("+gamedir");
-	if (i && i < COM_Argc() - 1)
-		FS_SetGamedir (COM_Argv(i + 1), true);
+    if (i && i < COM_Argc() - 1)
+        FS_SetGamedir (COM_Argv(i + 1), true);*/
 }
 
 void FS_InitFilesystem( void ) {
@@ -822,6 +824,7 @@ void FS_InitFilesystem( void ) {
 // allow user select differet "style" how/where open/save different media files.
 // so user select media_dir is relative to quake base dir or some system HOME dir or may be full path
 // NOTE: using static buffer, use with care
+/*
 char *FS_LegacyDir(char *media_dir)
 {
 	static char dir[MAX_PATH];
@@ -851,6 +854,7 @@ char *FS_LegacyDir(char *media_dir)
 			return dir;
 	}
 }
+*/
 
 
 //=============================================================================
@@ -1237,7 +1241,7 @@ static qbool FS_PakOper_NoPath(char* pakfile, pak_operation_t op)
 
 	return false;
 }
-
+/*
 static void FS_PakOper_Process(pak_operation_t op)
 {
 	int i;
@@ -1261,9 +1265,9 @@ static void FS_PakOper_Process(pak_operation_t op)
 		else Com_Printf("Pak not %s\n", op == PAKOP_ADD ? "added" : "removed");
 	}
 }
-
-void FS_PakAdd_f(void) { FS_PakOper_Process(PAKOP_ADD); }
-void FS_PakRem_f(void) { FS_PakOper_Process(PAKOP_REM); }
+*/
+//void FS_PakAdd_f(void) { FS_PakOper_Process(PAKOP_ADD); }
+//void FS_PakRem_f(void) { FS_PakOper_Process(PAKOP_REM); }
 
 #define CHUNK 16384
 
@@ -2057,7 +2061,7 @@ int FS_ZipGetNextFile (unzFile zip_file, sys_dirent *ent)
 #endif // WITH_ZIP
 
 //============================================================================
-
+/*
 void FS_InitModuleFS (void)
 {
     Cmd_AddCommand("loadpak", FS_PakAdd_f);
@@ -2071,7 +2075,7 @@ void FS_InitModuleFS (void)
     Cvar_Register(&fs_cache);
 	Com_Printf("Initialising quake VFS filesystem\n");
 }
-
+*/
 
 /******************************************************************************
  *     TODO:
@@ -3041,6 +3045,7 @@ FS_ReloadPackFiles
 
 Called when the client has downloaded a new pak/pk3 file
 */
+/*
 void FS_ReloadPackFilesFlags(FS_Load_File_Types reloadflags)
 {
 	searchpath_t	*oldpaths;
@@ -3092,17 +3097,19 @@ void FS_ReloadPackFilesFlags(FS_Load_File_Types reloadflags)
 	if (!fs_base_searchpaths)
 		fs_base_searchpaths = fs_searchpaths;
 }
-
+*/
+/*
 void FS_UnloadPackFiles(void)
 {
-	FS_ReloadPackFilesFlags(FS_LOAD_NONE);
+    FS_ReloadPackFilesFlags(FS_LOAD_NONE);
 }
 
 void FS_ReloadPackFiles(void)
 {
 	FS_ReloadPackFilesFlags(FS_LOAD_FILE_ALL);
 }
-
+*/
+/*
 void FS_ReloadPackFiles_f(void)
 {
 	if (Cmd_Argc() > 2) {
@@ -3115,7 +3122,7 @@ void FS_ReloadPackFiles_f(void)
 		FS_ReloadPackFilesFlags(FS_LOAD_FILE_ALL);
 
 }
-
+*/
 void FS_ListFiles_f(void)
 {
 	if (Cmd_Argc() != 2) {

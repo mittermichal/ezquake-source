@@ -40,6 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <unistd.h>
 #endif
 #include "EX_browser.h"
+#include "utils.h"
 
 // declared in EX_browser.c
 extern cvar_t sb_proxinfopersec;
@@ -730,6 +731,7 @@ void SB_PingTree_DumpPath(const netadr_t *addr)
         byte *ip = ping_nodes[route[route_i-1]].ipaddr.data;
         Com_Printf(";connect %d.%d.%d.%d:%d\n",
             ip[0], ip[1], ip[2], ip[3],	ntohs(ping_nodes[route[route_i-1]].proxport));
+        CopyToClipboard("test");
 
 	}
 }
@@ -756,7 +758,7 @@ int SB_PingTree_GetPathLen(const netadr_t *addr)
 		return proxies;
 	}
 }
-
+/*
 /// Connects to given QW server using the best available route
 void SB_PingTree_ConnectBestPath(const netadr_t *addr)
 {
@@ -778,7 +780,7 @@ void SB_PingTree_ConnectBestPath(const netadr_t *addr)
 
 		while (current != startnode_id && current != INVALID_NODE) {
 			byte *ip = ping_nodes[current].ipaddr.data;
-			char newval[2048]; /* va() used 2048b buffer..*/
+            char newval[2048]; // va() used 2048b buffer..
 
 			snprintf(&newval[0], sizeof(newval), "%d.%d.%d.%d:%d%s%s", (int) ip[0], (int) ip[1], (int) ip[2],
 				(int) ip[3], (int) ntohs(ping_nodes[current].proxport), *proxylist_buf ? "@" : "", proxylist_buf);
@@ -793,12 +795,12 @@ void SB_PingTree_ConnectBestPath(const netadr_t *addr)
 		Cvar_Set(&cl_proxyaddr, proxylist_buf);
 	}
 
-	/* FIXME: Create a Cbuf_AddTextFmt? */
+    // FIXME: Create a Cbuf_AddTextFmt?
 	Cbuf_AddText("connect ");
 	Cbuf_AddText(NET_AdrToString(*addr));
 	Cbuf_AddText("\n");
 }
-
+*/
 int SB_Proxylist_Unserialize(FILE *f)
 {
 	int version, count = 0;

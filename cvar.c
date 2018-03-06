@@ -117,18 +117,18 @@ void Cvar_SetEx(cvar_t *var, char *value, qbool ignore_callback)
 	if ((var->flags & CVAR_SERVERINFO) && !strcmp(value, "0")) {
 		value = "";
 	}
-
+/*
 #ifndef SERVERONLY
 	// C code may wrongly use Cvar_Set on non registered variable, some 99.99% accurate check
 	// variables for internal triggers are not registered intentionally
 	if (var < re_subi || var > re_subi + 9) {
-		if (!var->next /* this is fast, but a bit flawed logic */ && !Cvar_Find(var->name)) {
+        if (!var->next && !Cvar_Find(var->name)) {
 			Com_Printf("Cvar_Set: on non linked var %s\n", var->name);
 			return;
 		}
 	}
 #endif
-
+*/
 	if (var->flags & CVAR_ROM) {
 #ifndef SERVERONLY
 		Com_Printf ("\"%s\" is write protected\n", var->name);
@@ -218,7 +218,7 @@ void Cvar_SetEx(cvar_t *var, char *value, qbool ignore_callback)
 	var->value = Q_atof (var->string);
 #ifndef SERVERONLY
 	var->integer = Q_atoi (var->string);
-	StringToRGB_W(var->string, var->color);
+    //StringToRGB_W(var->string, var->color);
 	if (!same_value) {
 		Cvar_AutoReset (var);
 	}
@@ -226,15 +226,15 @@ void Cvar_SetEx(cvar_t *var, char *value, qbool ignore_callback)
 #endif
 
 #ifndef CLIENTONLY
-	if (var->flags & CVAR_SERVERINFO) {
+    /*if (var->flags & CVAR_SERVERINFO) {
 		SV_ServerinfoChanged(var->name, var->string);
-	}
+    }*/
 #endif
 
 #ifndef SERVERONLY
-	if (var->flags & CVAR_USERINFO) {
+    /*if (var->flags & CVAR_USERINFO) {
 		CL_UserinfoChanged(var->name, var->string);
-	}
+    }*/
 #endif
 }
 
@@ -348,7 +348,7 @@ void Cvar_Register (cvar_t *var)
 				old->latchedString = NULL;
 				old->value   = Q_atof (old->string);
 				old->integer = Q_atoi (old->string);
-				StringToRGB_W(old->string, old->color);
+                //StringToRGB_W(old->string, old->color);
 				old->modified = true;
 			}
 			Cvar_AutoReset(old);
@@ -387,7 +387,7 @@ void Cvar_Register (cvar_t *var)
 
 	var->value = Q_atof (var->string);
 	var->integer = Q_atoi (var->string);
-	StringToRGB_W(var->string, var->color);
+    //StringToRGB_W(var->string, var->color);
 	var->modified = true;
 
 	// link the variable in
@@ -404,17 +404,17 @@ void Cvar_Register (cvar_t *var)
 	Cvar_AddCvarToGroup(var);
 
 #ifndef CLIENTONLY
-	if (var->flags & CVAR_SERVERINFO) {
+    /*if (var->flags & CVAR_SERVERINFO) {
 		SV_ServerinfoChanged(var->name, var->string);
-	}
+    }*/
 #endif
 
-	if (var->flags & CVAR_USERINFO) {
+    /*if (var->flags & CVAR_USERINFO) {
 		CL_UserinfoChanged(var->name, var->string);
-	}
+    }*/
 #endif // !SERVERONLY
 }
-
+/*
 qbool Cvar_Command (void)
 {
 	cvar_t *v;
@@ -461,7 +461,7 @@ qbool Cvar_Command (void)
 #ifndef SERVERONLY
 		// RestrictTriggers means that advanced (possibly cheaty) scripts are not allowed
 		// So we will force the usage of user-created variables to go through the set command
-		if (cbuf_current == &cbuf_server) {
+        if (cbuf_current == &cbuf_server) {
 			// Keep the mod from changing user cvars that it didn't create
 			if ((v->flags & CVAR_USER_CREATED) && !(v->flags & CVAR_MOD_CREATED)) {
 				Con_Printf ("Error: server attempt to \"set\" user created variable [%s]\n", v->name);
@@ -471,14 +471,14 @@ qbool Cvar_Command (void)
 		else if ((v->flags & CVAR_USER_CREATED) && Rulesets_RestrictTriggers()) {
 			Con_Printf ("Current ruleset requires \"set\" with user created variables [%s]\n", v->name);
 			return true;
-		}
+        }
 #endif
 		Cvar_Set (v, Cmd_MakeArgs(1));
 	}
 
 	return true;
 }
-
+*/
 static void Cvar_Toggle_f_base (qbool use_regex)
 {
 	qbool re_search = false;
@@ -645,7 +645,7 @@ cvar_t *Cvar_Create(const char *name, const char *string, int cvarflags)
 		v->flags |= CVAR_MOD_CREATED;
 	}
 	v->integer = Q_atoi(v->string);
-	StringToRGB_W(v->string, v->color);
+    //StringToRGB_W(v->string, v->color);
 	v->modified = true;
 #ifdef WITH_TCL
 	TCL_RegisterVariable(v);
@@ -1068,7 +1068,7 @@ void Cvar_Set_tp_f(void)
 		var->teamplay = true;
 	}
 }
-
+/*
 void Cvar_Set_ex_f (void)
 {
 	cvar_t	*var;
@@ -1099,7 +1099,7 @@ void Cvar_Set_ex_f (void)
 
 	Cvar_Set (var, st );
 }
-
+*/
 void Cvar_Set_Alias_Str_f (void)
 {
 	cvar_t		*var;
@@ -1137,7 +1137,7 @@ void Cvar_Set_Alias_Str_f (void)
 		Cvar_Set (var, v);
 	}
 }
-
+/*
 void Cvar_Set_Bind_Str_f(void)
 {
 	cvar_t		*var;
@@ -1182,6 +1182,7 @@ void Cvar_Set_Bind_Str_f(void)
 		}
 	}
 }
+*/
 
 // disconnect -->
 void Cvar_UnSet (qbool use_regex)
@@ -1402,7 +1403,7 @@ void Cvar_Set_Calc_f(void)
 }
 
 // <-- QW262
-
+/*
 void Cvar_Set_Eval_f(void)
 {
 	if (Cmd_Argc() < 3) {
@@ -1446,11 +1447,11 @@ void Cvar_Set_Eval_f(void)
 			}
 		}
 		else {
-			Com_Printf("Error in expression: %s\n", Parser_Error_Description(errn));
+            Com_Printf("Error in expression: %s\n", Parser_Error_Description(errn));
 		}
 	}
 }
-
+*/
 
 
 // if an unknown command with parameters was encountered when loading
@@ -1478,14 +1479,14 @@ void Cvar_CleanUpTempVars (void)
 
 void Cvar_Init (void)
 {
-	Cmd_AddCommand ("cvarlist", Cvar_CvarList_f);
+    /*Cmd_AddCommand ("cvarlist", Cvar_CvarList_f);
 	Cmd_AddCommand ("cvarlist_re", Cvar_CvarList_re_f);
 	Cmd_AddCommand ("toggle", Cvar_Toggle_f);
 	Cmd_AddCommand ("set", Cvar_Set_f);
-	Cmd_AddCommand ("inc", Cvar_Inc_f);
+    Cmd_AddCommand ("inc", Cvar_Inc_f);*/
 
 #ifndef SERVERONLY
-	Cmd_AddCommand ("set_tp", Cvar_Set_tp_f);
+    /*Cmd_AddCommand ("set_tp", Cvar_Set_tp_f);
 	Cmd_AddCommand ("set_ex", Cvar_Set_ex_f);
 	Cmd_AddCommand ("set_alias_str", Cvar_Set_Alias_Str_f);
 	Cmd_AddCommand ("set_bind_str", Cvar_Set_Bind_Str_f);
@@ -1495,13 +1496,13 @@ void Cvar_Init (void)
 	Cmd_AddCommand ("cvar_reset", Cvar_Reset_f);
 	Cmd_AddCommand ("cvar_reset_re", Cvar_Reset_re_f);
 	Cmd_AddCommand ("set_calc", Cvar_Set_Calc_f);
-	Cmd_AddCommand ("set_eval", Cvar_Set_Eval_f);
+    Cmd_AddCommand ("set_eval", Cvar_Set_Eval_f);*/
 
 	Cvar_SetCurrentGroup(CVAR_GROUP_CONSOLE);
 	Cvar_Register (&cvar_viewdefault);
 	Cvar_Register (&cvar_viewhelp);
 	Cvar_Register (&cvar_viewlatched);
 
-	Cvar_ResetCurrentGroup();
+    Cvar_ResetCurrentGroup();
 #endif
 }

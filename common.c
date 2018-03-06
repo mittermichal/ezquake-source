@@ -1430,12 +1430,12 @@ void Com_Printf (char *fmt, ...)
 
     /*This is beyond retarded because it may cause RECURSION*/
 	// Triggers with mask 64
-	if (!(Print_flags[Print_current] & PR_TR_SKIP))
-		CL_SearchForReTriggers (msg, RE_PRINT_INTERNAL);
+    //if (!(Print_flags[Print_current] & PR_TR_SKIP))
+    //	CL_SearchForReTriggers (msg, RE_PRINT_INTERNAL);
 
 	// write it to the scrollable buffer
 	//	Con_Print (va("ezQuake: %s", msg));
-	Con_PrintW (str2wcs(msg));
+    //Con_PrintW (str2wcs(msg));
 }
 
 void Com_DPrintf (char *fmt, ...) 
@@ -1539,6 +1539,7 @@ void COM_ParseIPCData(const char *buf, unsigned int bufsize)
 //
 // Check if the first command line argument is a .qtv or a demo to be played.
 //
+/*
 qbool COM_CheckArgsForPlayableFiles(char *commandbuf_out, unsigned int commandbuf_size)
 {
 	// Check for .qtv or demo files to play.
@@ -1577,7 +1578,7 @@ qbool COM_CheckArgsForPlayableFiles(char *commandbuf_out, unsigned int commandbu
 
     return false;
 }
-
+*/
 //============================================================================
 
 static char q_normalize_chartbl[256];

@@ -127,7 +127,7 @@ static qbool NET_PacketQueueRemove(packet_queue_t* queue, sizebuf_t* buffer, net
 }
 
 float f_rnd(float from, float to);
-
+/*
 static qbool NET_PacketQueueAdd(packet_queue_t* queue, byte* data, int size, netadr_t addr)
 {
 	cl_delayed_packet_t* next = &queue->packets[queue->tail];
@@ -146,7 +146,7 @@ static qbool NET_PacketQueueAdd(packet_queue_t* queue, byte* data, int size, net
 	NET_PacketQueueSetNextIndex(&queue->tail);
 	return true;
 }
-
+*/
 static cl_delayed_packet_t* NET_PacketQueuePeek(packet_queue_t* queue)
 {
 	cl_delayed_packet_t* next = &queue->packets[queue->head];
@@ -182,7 +182,7 @@ int NET_UDPSVPort (void)
 	return ntohs(net_local_sv_ipadr.port);
 }
 #endif
-
+/*
 int NET_GetSocket(netsrc_t netsrc, qbool tcp)
 {
 	if (netsrc == NS_SERVER)
@@ -204,7 +204,7 @@ int NET_GetSocket(netsrc_t netsrc, qbool tcp)
 #endif
 	}
 }
-
+*/
 //=============================================================================
 //
 // Converters.
@@ -421,7 +421,7 @@ void NET_ClearLoopback (void)
 	loopbacks[0].send = loopbacks[0].get = 0;
 	loopbacks[1].send = loopbacks[1].get = 0;
 }
-
+/*
 #ifndef CLIENTONLY
 //=============================================================================
 //
@@ -454,7 +454,8 @@ svtcpstream_t *sv_tcp_connection_new(int sock, netadr_t from, char *buf, int buf
 
 	return st;
 }
-
+*/
+/*
 // free data, may unlink it out if requested
 static void sv_tcp_connection_free(svtcpstream_t *drop, qbool unlink)
 {
@@ -490,6 +491,7 @@ static void sv_tcp_connection_free(svtcpstream_t *drop, qbool unlink)
 	Q_free(drop);
 }
 
+
 int sv_tcp_connection_count(void)
 {
 	svtcpstream_t *st = NULL;
@@ -501,9 +503,9 @@ int sv_tcp_connection_count(void)
 	return cnt;
 }
 #endif
-
+*/
 //=============================================================================
-
+/*
 qbool NET_GetUDPPacket (netsrc_t netsrc, netadr_t *from_adr, sizebuf_t *message)
 {
 	int ret, err;
@@ -551,7 +553,9 @@ qbool NET_GetUDPPacket (netsrc_t netsrc, netadr_t *from_adr, sizebuf_t *message)
 
 	return ret;
 }
+*/
 
+/*
 #ifndef SERVERONLY
 qbool NET_GetTCPPacket_CL (netsrc_t netsrc, netadr_t *from, sizebuf_t *message)
 {
@@ -619,7 +623,8 @@ qbool NET_GetTCPPacket_CL (netsrc_t netsrc, netadr_t *from, sizebuf_t *message)
 	return true;
 }
 #endif
-
+*/
+/*
 #ifndef CLIENTONLY
 qbool NET_GetTCPPacket_SV (netsrc_t netsrc, netadr_t *from, sizebuf_t *message)
 {
@@ -745,7 +750,8 @@ qbool NET_GetTCPPacket_SV (netsrc_t netsrc, netadr_t *from, sizebuf_t *message)
 	return false; // no packet received.
 }
 #endif
-
+*/
+/*
 qbool NET_GetPacketEx (netsrc_t netsrc, qbool delay)
 {
 #ifndef SERVERONLY
@@ -775,7 +781,8 @@ qbool NET_GetPacketEx (netsrc_t netsrc, qbool delay)
 
 	return false;
 }
-
+*/
+/*
 qbool NET_GetPacket (netsrc_t netsrc)
 {
 #ifdef SERVERONLY
@@ -786,9 +793,9 @@ qbool NET_GetPacket (netsrc_t netsrc)
 
 	return NET_GetPacketEx (netsrc, delay);
 }
-
+*/
 //=============================================================================
-
+/*
 #ifndef SERVERONLY
 qbool NET_SendTCPPacket_CL (netsrc_t netsrc, int length, void *data, netadr_t to)
 {
@@ -809,7 +816,8 @@ qbool NET_SendTCPPacket_CL (netsrc_t netsrc, int length, void *data, netadr_t to
 	return true;
 }
 #endif
-
+*/
+/*
 #ifndef CLIENTONLY
 qbool NET_SendTCPPacket_SV (netsrc_t netsrc, int length, void *data, netadr_t to)
 {
@@ -869,7 +877,8 @@ qbool NET_SendTCPPacket_SV (netsrc_t netsrc, int length, void *data, netadr_t to
 	return !!st;
 }
 #endif
-
+*/
+/*
 qbool NET_SendUDPPacket (netsrc_t netsrc, int length, void *data, netadr_t to)
 {
 	struct sockaddr_storage addr;
@@ -894,7 +903,8 @@ qbool NET_SendUDPPacket (netsrc_t netsrc, int length, void *data, netadr_t to)
 
 	return true;
 }
-
+*/
+/*
 void NET_SendPacketEx (netsrc_t netsrc, int length, void *data, netadr_t to, qbool delay)
 {
 #ifndef SERVERONLY
@@ -964,7 +974,7 @@ qbool CL_UnqueOutputPacket(qbool sendall)
 	return released;
 }
 #endif
-
+*/
 //=============================================================================
 
 qbool TCP_Set_KEEPALIVE(int sock)
@@ -1173,7 +1183,7 @@ int UDP_OpenSocket (unsigned short int port)
 
 	return newsocket;
 }
-
+/*
 qbool NET_Sleep(int msec, qbool stdinissocket)
 {
 	struct timeval	timeout;
@@ -1211,7 +1221,7 @@ qbool NET_Sleep(int msec, qbool stdinissocket)
 
 	return stdin_ready;
 }
-
+*/
 void NET_GetLocalAddress (int socket, netadr_t *out)
 {
 	char buff[512];
@@ -1245,7 +1255,7 @@ void NET_GetLocalAddress (int socket, netadr_t *out)
 		Com_Printf_State (PRINT_OK, "IP address %s\n", NET_AdrToString (*out));
 #endif
 }
-
+/*
 void NET_Init (void)
 {
 #ifdef _WIN32
@@ -1285,7 +1295,8 @@ void NET_Init (void)
 	NET_InitServer();
 #endif
 }
-
+*/
+/*
 void NET_Shutdown (void)
 {
 #ifndef CLIENTONLY
@@ -1300,7 +1311,8 @@ void NET_Shutdown (void)
 	WSACleanup ();
 #endif
 }
-
+*/
+/*
 #ifndef SERVERONLY
 void NET_InitClient(void)
 {
@@ -1354,7 +1366,8 @@ qbool CL_QueInputPacket(void)
 	return NET_PacketQueueAdd(&delay_queue_get, net_message.data, net_message.cursize, net_from);
 }
 #endif
-
+*/
+/*
 #ifndef CLIENTONLY
 //
 // Open server TCP port.
@@ -1440,4 +1453,4 @@ void NET_CloseServer (void)
 // <--TCPCONNECT
 }
 #endif
-
+*/

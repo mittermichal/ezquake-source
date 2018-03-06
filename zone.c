@@ -521,7 +521,7 @@ void Cache_Flush(void)
 		Cache_Free(cache_head.next->user); // reclaim the space
 	}
 #ifndef SERVERONLY
-	Mod_ClearSimpleTextures();
+    //Mod_ClearSimpleTextures();
 #endif
 }
 

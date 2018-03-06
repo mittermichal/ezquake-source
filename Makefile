@@ -88,7 +88,7 @@ VER_DEFS += -DVERSION='"$(VER)"'
 SDL2_CFLAGS ?= $(shell sdl2-config --cflags)
 SDL2_LIBS ?= $(shell sdl2-config --libs)
 
-CFLAGS_c += $(BUILD_DEFS) $(VER_DEFS) $(PATH_DEFS) $(SDL2_CFLAGS) -DNDEBUG -DJSS_CAM -DUSE_PR2 -DWITH_NQPROGS -DUSE_SDL2 -DWITH_ZIP -DDEBUG -g
+CFLAGS_c += $(BUILD_DEFS) $(VER_DEFS) $(PATH_DEFS) $(SDL2_CFLAGS) -DNDEBUG -DJSS_CAM -DUSE_PR2 -DWITH_NQPROGS -DUSE_SDL2 -DDEBUG -g
 LIBS_c += $(SDL2_LIBS)
 
 # built-in requirements
@@ -140,7 +140,6 @@ RCFLAGS_c += -DREVISION=$(REV) -DVERSION='\"$(VER)\"'
 
 COMMON_OBJS := \
     connectbr.o         \
-    cmodel.o		\
     cmd.o		\
     com_msg.o		\
     common.o		\
@@ -149,7 +148,6 @@ COMMON_OBJS := \
     fs.o		\
     vfs_os.o		\
     vfs_pak.o		\
-    vfs_zip.o		\
     vfs_tcp.o		\
     vfs_gzip.o		\
     vfs_doomwad.o	\
@@ -160,12 +158,9 @@ COMMON_OBJS := \
     mathlib.o		\
     md4.o		\
     net.o		\
-    net_chan.o		\
     q_shared.o		\
     version.o		\
-    zone.o              \
-    pmove.o             \
-    pmovetst.o
+    zone.o
 
 SERVER_OBJS := \
     pr_cmds.o \
@@ -336,13 +331,15 @@ else
     CFLAGS += -DCLIENTONLY
 endif
 
-#OBJS_c := \
-#    $(COMMON_OBJS) \
-#    EX_browser_net.o \
-#    EX_browser_pathfind.o \
-#    EX_browser_ping.o \
-#    EX_browser_qtvlist.o \
-#    EX_browser_sources.o
+OBJS_c := \
+    $(COMMON_OBJS) \
+    EX_browser.o \
+    EX_browser_net.o \
+    EX_browser_pathfind.o \
+    EX_browser_ping.o \
+    EX_browser_sources.o \
+    sys_sdl2.o \
+    utils.o
 
 ifdef CONFIG_WINDOWS
     OBJS_c += \

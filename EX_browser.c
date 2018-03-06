@@ -182,14 +182,16 @@ void SB_ServerList_Unlock(void)
 {
 	SDL_UnlockMutex(serverlist_mutex);
 }
-
+/*
 static qbool SB_Is_Selected_Proxy(const server_data *s)
 {
 	return (strstr(cl_proxyaddr.string, s->display.ip) != NULL);
 }
+*/
 
 // removes given proxy from the proxyaddr list
 // if cl_proxyaddr "a:b:c" and s->ip = "b" then it changes cl_proxyaddr to "a:c"
+/*
 static void SB_Proxy_Unselect(const server_data *s)
 {
 	const char *start = strstr(cl_proxyaddr.string, s->display.ip);
@@ -220,8 +222,9 @@ static void SB_Proxy_Unselect(const server_data *s)
 
 	Q_free(bufstart);
 }
-
+*/
 // adds selected proxy to the end of the proxies list
+/*
 static void SB_Proxy_Select(const server_data *s)
 {
 	size_t len = strlen(s->display.ip) + strlen(cl_proxyaddr.string) + 2;
@@ -238,7 +241,8 @@ static void SB_Proxy_Select(const server_data *s)
 
 	Q_free(buf);
 }
-
+*/
+/*
 static void SB_Select_QWfwd(server_data *s)
 {
 	if (SB_Is_Selected_Proxy(s)) {
@@ -250,6 +254,7 @@ static void SB_Select_QWfwd(server_data *s)
 	S_LocalSound ("misc/menu2.wav");
 	Serverinfo_Stop();
 }
+*/
 
 static const char* SB_Source_Type_Name(sb_source_type_t type)
 {
@@ -263,7 +268,7 @@ static const char* SB_Source_Type_Name(sb_source_type_t type)
 				 return "ERROR";
 	}
 }
-
+/*
 static void SB_Browser_Hide(const server_data *s)
 {
 	if (sb_autohide.value)
@@ -275,7 +280,8 @@ static void SB_Browser_Hide(const server_data *s)
 		}
 	}
 }
-
+*/
+/*
 static void Join_Server (server_data *s)
 {
 	if (sb_findroutes.integer) {
@@ -289,7 +295,8 @@ static void Join_Server (server_data *s)
 
 	SB_Browser_Hide(s);
 }
-
+*/
+/*
 static void Join_Server_Direct(server_data *s)
 {
 	Cvar_Set(&cl_proxyaddr, "");
@@ -298,7 +305,8 @@ static void Join_Server_Direct(server_data *s)
 	Cbuf_AddText ("\n");
 	SB_Browser_Hide(s);
 }
-
+*/
+/*
 static void Observe_Server (server_data *s)
 {
 	if (sb_findroutes.integer) {
@@ -311,7 +319,7 @@ static void Observe_Server (server_data *s)
 	}
 	SB_Browser_Hide(s);
 }
-
+*/
 // case insensitive and red-insensitive compare
 static int strcmp2 (const char * s1, const char * s2)
 {
@@ -334,7 +342,7 @@ static int strcmp2 (const char * s1, const char * s2)
 
 	return 0;
 }
-
+/*
 static void CopyServerToClipboard (server_data *s)
 {
 	char buf[2048];
@@ -348,7 +356,8 @@ static void CopyServerToClipboard (server_data *s)
 
 	CopyToClipboard(buf);
 }
-
+*/
+/*
 static void PasteServerToConsole (server_data *s)
 {
 	char buf[2048];
@@ -361,7 +370,7 @@ static void PasteServerToConsole (server_data *s)
 	Cbuf_AddText (buf);
 	Cbuf_AddText ("\n");
 }
-
+*/
 
 //
 // browser routines
@@ -484,7 +493,7 @@ void SB_Confirmation (const char *text, void (*func)(void))
 	confirm_func = func;
 	confirmation = 1;
 }
-
+/*
 void SB_Confirmation_Draw (void)
 {
 	int x, y, w, h;
@@ -521,7 +530,7 @@ void SB_Confirmation_Key (int key)
 			confirm_func();
 	}
 }
-
+*/
 /* Menu drawing */
 
 int Servers_pos;
@@ -550,7 +559,7 @@ void Serverinfo_Sources_Key(int key);
 //
 
 int sourcesn_updated = 0;
-
+/*
 int Sources_Compare_Func (const void * p_s1, const void * p_s2)
 {
 	int reverse = 0;
@@ -608,12 +617,12 @@ void Sort_Sources (void)
 			sourcesn_updated ++;
 }
 
-
+*/
 int serverinfo_players_pos;
 int serverinfo_sources_pos;
 int serverinfo_sources_disp;
 extern int autoupdate_serverinfo; // declared in EX_browser_net.c
-
+/*
 void Serverinfo_Stop(void)
 {
 	show_serverinfo = NULL;
@@ -653,7 +662,8 @@ void Serverinfo_Start (server_data *s)
 		testing_connection = 1;
 	}
 }
-
+*/
+/*
 void Serverinfo_Change (server_data *s)
 {
 	Alter_Autoupdate(s);
@@ -672,9 +682,9 @@ void Serverinfo_Change (server_data *s)
 		testing_connection = 1;
 	}
 }
-
+*/
 // --
-
+/*
 qbool AddUnboundServer(char *addr)
 {
 	int i;
@@ -703,16 +713,17 @@ qbool AddUnboundServer(char *addr)
 	}
 
 	// start menu
-	key_dest = key_menu;
+    //key_dest = key_menu;
 	Mark_Source(sources[0]);
-	Menu_MultiPlayer_SwitchToServersTab();
+    //Menu_MultiPlayer_SwitchToServersTab();
 	GetServerPing(s);
 	GetServerInfo(s);
 	Serverinfo_Start(s);
 	// M_Menu_ServerList_f();
 	return true;
 }
-
+*/
+/*
 void AddServer_f(void)
 {
 	if (Cmd_Argc() != 2)
@@ -729,7 +740,7 @@ void AddServer_f(void)
 			Com_Printf("Error: couldn't resolve\n");
 	}
 }
-
+*/
 void SB_PingsDump_f(void)
 {
 	extern qbool useNewPing;
@@ -748,7 +759,7 @@ void SB_PingsDump_f(void)
 //
 // drawing routines
 //
-
+/*
 void Add_ColumnColored(int x, int y, int *pos, const char *t, int w, const char* color)
 {
 	char buf[128];
@@ -887,7 +898,8 @@ void Draw_Server_Statusbar(int x, int y, int w, int h, server_data *s, int count
 		UI_Print_Center(x+4, y+h-8, w, line, false);
 	}
 }
-
+*/
+/*
 void Add_Server_Draw(void)
 {
 	int x, y, w, h;
@@ -918,6 +930,7 @@ void Add_Server_Draw(void)
 	if (newserver_pos == 2)
 		Draw_Character (x+59, y+50, 13);
 }
+*/
 
 void SB_Servers_OnShow (void)
 {
@@ -951,7 +964,7 @@ static const char *SB_Ping_Color(int ping)
 		default: return "f00"; // 116+
 	}
 }
-
+/*
 static unsigned int SB_Servers_Hovered_Column(int w)
 {
 	int w_from = w, w_to = w;
@@ -1004,7 +1017,8 @@ int SB_Servers_Draw_ColumnHeaders(int x, int y, int w)
 
 	return pos;
 }
-
+*/
+/*
 void SB_Servers_Draw (int x, int y, int w, int h)
 {
 	char line[1024];
@@ -1510,7 +1524,7 @@ void Serverinfo_Rules_Draw(int x, int y, int w, int h)
 		UI_Print(x, y+i*8, buf, false);
 	}
 }
-
+*/
 int IsInSource(source_data *source, server_data *serv)
 {
 	int i;
@@ -1519,7 +1533,7 @@ int IsInSource(source_data *source, server_data *serv)
 			return i+1;
 	return false;
 }
-
+/*
 void Serverinfo_Sources_Draw(int x, int y, int w, int h)
 {
 	int i;
@@ -1787,7 +1801,7 @@ void SB_Players_Draw (int x, int y, int w, int h)
 	if (sb_status.value  &&  all_players_n > 0)
 		Draw_Server_Statusbar(x, y, w, h, all_players[Players_pos]->serv, Players_pos, all_players_n);
 }
-
+*/
 void SB_SourceUnmarkAll(void)
 {
 	int i;
@@ -1871,7 +1885,7 @@ static void SB_NewSource_Shift(void)
 	// excluding dummy, presuming dummy is last
 	newsource_type = (newsource_type + 1) % (type_dummy);
 }
-
+/*
 void Add_Source_Key(int key, wchar unichar)
 {
 	switch (key)
@@ -1944,7 +1958,8 @@ void Add_Source_Key(int key, wchar unichar)
 	// Make sure value stays within limits and enable field wrapping 0..4->0
 	newsource_pos = (newsource_pos + 5) % 5;
 }
-
+*/
+/*
 void Add_Server_Key(int key, wchar unichar)
 {
 	switch (key)
@@ -2009,7 +2024,8 @@ void Add_Server_Key(int key, wchar unichar)
 	// Make sure value stays within limits and enable field wrapping 0..2->0
 	newserver_pos = (newserver_pos + 3) % 3;
 }
-
+*/
+/*
 qbool SearchNextServer (int pos)
 {
 	int i;
@@ -2027,6 +2043,7 @@ qbool SearchNextServer (int pos)
 
 	return false;
 }
+*/
 
 static void SB_Servers_Toggle_Column_Show(int colidx)
 {
@@ -2058,7 +2075,7 @@ static void SB_Servers_Toggle_Column_Sort(char key)
 	Cvar_Set(&sb_sortservers, buf);
 	resort_servers = 1;
 }
-
+/*
 int SB_Servers_Key(int key)
 {
 	if (serversn_passed <= 0 && key == K_BACKSPACE) {
@@ -2401,7 +2418,7 @@ void Serverinfo_Sources_Key(int key)
 	serverinfo_sources_pos = max(serverinfo_sources_pos, 0);
 	serverinfo_sources_pos = min(serverinfo_sources_pos, sourcesn_updated-1);
 }
-
+*/
 void SB_RemoveSourceProc(void)
 {
 	SB_Source_Remove(Sources_pos);
@@ -2410,7 +2427,7 @@ void SB_RemoveSourceProc(void)
 		Sources_pos = sourcesn - 1;
 	}
 }
-
+/*
 int SB_Sources_Key(int key)
 {
 	int i;
@@ -2514,7 +2531,8 @@ int SB_Sources_Key(int key)
 	Sources_pos = min(Sources_pos, sourcesn-1);
 	return true;
 }
-
+*/
+/*
 qbool SearchNextPlayer(int pos)
 {
 	int i;
@@ -2532,7 +2550,8 @@ qbool SearchNextPlayer(int pos)
 
 	return false;
 }
-
+*/
+/*
 int SB_Players_Key(int key)
 {
 	int i;
@@ -2713,7 +2732,8 @@ qbool SB_Players_Mouse_Event(const mouse_state_t *ms)
 	Players_pos = bound(0, Players_pos, all_players_n - 1);
 	return true;
 }
-
+*/
+/*
 void SB_Specials_Draw(void)
 {
 	if (show_serverinfo) Serverinfo_Draw();
@@ -2721,7 +2741,8 @@ void SB_Specials_Draw(void)
 	if (updating_sources) UpdatingSources_Draw();
 	if (confirmation) SB_Confirmation_Draw();
 }
-
+*/
+/*
 qbool SB_Specials_Key(int key, wchar unichar)
 {
 	if (confirmation)
@@ -2774,7 +2795,7 @@ qbool SB_Specials_Key(int key, wchar unichar)
 
 	return false;
 }
-
+*/
 //
 // sorting routines
 //
@@ -2824,7 +2845,7 @@ static int Servers_Compare_Natural(const server_data *s1, const server_data *s2)
 		}
 	}
 }
-
+/*
 int Servers_Compare_Func(const void * p_s1, const void * p_s2)
 {
 	int reverse = 0;
@@ -2895,7 +2916,7 @@ int Servers_Compare_Func(const void * p_s1, const void * p_s2)
 			return reverse ? -d : d;
 	}
 }
-
+*/
 void Filter_Servers(void)
 {
 	int i;
@@ -2939,7 +2960,7 @@ void Filter_Servers(void)
 	}
 	return;
 }
-
+/*
 void Sort_Servers (void)
 {
 	SB_ServerList_Lock();
@@ -2947,7 +2968,7 @@ void Sort_Servers (void)
 	qsort(servers, serversn, sizeof(servers[0]), Servers_Compare_Func);
 	SB_ServerList_Unlock();
 }
-
+*/
 
 //
 // build all players list
@@ -2955,7 +2976,7 @@ void Sort_Servers (void)
 
 int rebuild_all_players = 0;
 int resort_all_players = 0;
-
+/*
 int All_Players_Compare_Func(const void * p_p1, const void * p_p2)
 {
 	int reverse = 0;
@@ -3027,7 +3048,7 @@ void Sort_All_Players(void)
 {
 	qsort(all_players, all_players_n, sizeof(all_players[0]), All_Players_Compare_Func);
 }
-
+*/
 void Rebuild_All_Players(void)
 {
 	int i, j, players = 0;
@@ -3339,7 +3360,7 @@ void Browser_Init2 (void)
 	Reload_Sources();
 	MarkDefaultSources();
 }
-
+/*
 void SB_ExecuteQueuedTriggers(void) {
     Com_Printf("SB_ExecuteQueuedTriggers\n");
 	if (sb_queuedtriggers & SB_TRIGGER_REFRESHDONE) {
@@ -3357,3 +3378,4 @@ void SB_ExecuteQueuedTriggers(void) {
 		sb_queuedtriggers &= ~SB_TRIGGER_NOTIFY_PINGTREE;
 	}
 }
+*/

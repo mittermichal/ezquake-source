@@ -329,13 +329,13 @@ void Cbuf_ExecuteEx (cbuf_t *cbuf)
 			cbuf->runAwayLoop = 0;
 		}
 
-		if (cbuf->wait && cbuf->waitCount >= Rulesets_MaxSequentialWaitCommands())
+        /*if (cbuf->wait && cbuf->waitCount >= Rulesets_MaxSequentialWaitCommands())
 		{
 			Com_Printf("\x02" "Max number of wait commands detected.\n");
 			cbuf->text_start = cbuf->text_end = (cbuf->maxsize >> 1);
 			cbuf->wait = false;
 			cbuf->waitCount = 0;
-		}
+        }*/
 
 		if (cbuf->wait)
 		{
@@ -343,7 +343,7 @@ void Cbuf_ExecuteEx (cbuf_t *cbuf)
 			cbuf->wait = false;
 			++cbuf->waitCount;
 
-			cbuf->runAwayLoop += Q_rint (0.5 * cls.frametime * MAX_RUNAWAYLOOP);
+            //cbuf->runAwayLoop += Q_rint (0.5 * cls.frametime * MAX_RUNAWAYLOOP);
 
 			if (cbuf == &cbuf_safe)
 				gtf--;
@@ -457,6 +457,7 @@ void Cmd_StuffCmds_f (void)
 	Q_free (token);
 }
 
+/*
 void Cmd_Exec_f (void)
 {
 	char *f, name[MAX_OSPATH];
@@ -511,6 +512,7 @@ void Cmd_Exec_f (void)
 	
 	Hunk_FreeToLowMark (mark);
 }
+*/
 
 //Just prints the rest of the line to the console
 /*void Cmd_Echo_f (void) {
@@ -520,6 +522,7 @@ void Cmd_Exec_f (void)
 		Com_Printf ("%s ", Cmd_Argv(i));
 	Com_Printf ("\n");
 }*/
+/*
 void Cmd_Echo_f (void)
 {
 	int	i;
@@ -547,6 +550,7 @@ void Cmd_Echo_f (void)
 	Print_flags[Print_current] |= PR_TR_SKIP;
 	Com_Printf ("%s\n", buf);
 }
+*/
 
 /*
 =============================================================================
@@ -697,7 +701,7 @@ void Cmd_AliasList_f (void)
 		ReSearchDone();
 	Com_Printf ("------------\n%i/%i aliases\n", m, count);
 }
-
+/*
 void Cmd_EditAlias_f (void)
 {
 	cmd_alias_t	*a;
@@ -723,7 +727,7 @@ void Cmd_EditAlias_f (void)
 	memcpy (key_lines[edit_line]+1, str2wcs(final_string), strlen(final_string)*sizeof(wchar));
 	Q_free(s);
 }
-
+*/
 static cmd_alias_t* Cmd_AliasCreate (char* name)
 {
 	cmd_alias_t	*a;
@@ -902,13 +906,11 @@ void Cmd_UnAlias_re_f (void)
  * Remove all aliases unless connected, then remove
  * all aliases except the server created aliases
  */
+/*
 void Cmd_UnAliasAll_f (void)
 {
 	cmd_alias_t	*a, *next;
 
-/* FIXME: Optimize this, its n^2 slow atm since Cmd_DeleteAlias will loop through
- * the list again for each entry
- */
 	if (cls.state >= ca_connected) {
 		Com_Printf("Connected to a server, will not remove server aliases\n");
 		for (a = cmd_alias; a; a = next) {
@@ -929,7 +931,7 @@ void Cmd_UnAliasAll_f (void)
 		memset (cmd_alias_hash, 0, sizeof(cmd_alias_t*) * ALIAS_HASHPOOL_SIZE);
 	}
 }
-
+*/
 void DeleteServerAliases(void)
 {
 	cmd_alias_t *a, *next;
@@ -1435,6 +1437,7 @@ void Cmd_CmdList_re_f (void)
 static macro_command_t macro_commands[MAX_MACROS];
 static int macro_count = 0;
 
+/*
 void Cmd_ReInitAllMacro (void)
 {
 	int i;
@@ -1446,7 +1449,8 @@ void Cmd_ReInitAllMacro (void)
 		if (macro_commands[i].teamplay != MACRO_NORULES)
 			macro_commands[i].teamplay = teamplay;
 }
-
+*/
+/*
 void Cmd_AddMacroEx (const char *s, char *(*f) (void), int teamplay)
 {
 	if (macro_count == MAX_MACROS)
@@ -1469,7 +1473,7 @@ void Cmd_AddMacro (const char *s, char *(*f) (void))
 {
 	Cmd_AddMacroEx (s, f, MACRO_NORULES);
 }
-
+*/
 char *Cmd_MacroString (const char *s, int *macro_length)
 {
 	int i;
@@ -1490,7 +1494,7 @@ char *Cmd_MacroString (const char *s, int *macro_length)
 
 	return NULL;
 }
-
+/*
 static int Cmd_MacroCompare (const void *p1, const void *p2)
 {
 	return strcmp ((*((macro_command_t **) p1))->name, (*((macro_command_t **) p2))->name);
@@ -1529,7 +1533,7 @@ void Cmd_MacroList_f (void)
 
 void TP_SetDefaultMacroFormat(char* cvar_lookup, int* fixed_width, int* alignment);
 char* TP_AlignMacroText(char* text, int fixed_width, int alignment);
-
+*/
 //Expands all $cvar expressions to cvar values
 //Also expands $macro expressions
 //Note: dest must point to a 1024 byte buffer
@@ -1581,9 +1585,9 @@ void Cmd_ExpandString (const char *data, char *dest)
 				int fixed_width = 0;
 				int alignment = 0;
 
-				TP_SetDefaultMacroFormat(buf, &fixed_width, &alignment);
-				if (fixed_width != 0)
-					str = TP_AlignMacroText(str, fixed_width, alignment);
+                //TP_SetDefaultMacroFormat(buf, &fixed_width, &alignment);
+                /*if (fixed_width != 0)
+                    str = TP_AlignMacroText(str, fixed_width, alignment);*/
 
 				// check buffer size
 				if (len + strlen (str) >= 1024 - 1)
@@ -1653,7 +1657,7 @@ char *formatted_comms_commands[] = {
 
 float	impulse_time = -9999;
 int		impulse_counter;
-
+/*
 qbool AllowedImpulse(int imp)
 {
 
@@ -1679,7 +1683,8 @@ qbool AllowedImpulse(int imp)
 	}
 	return false;
 }
-
+*/
+/*
 static qbool Cmd_IsCommandAllowedInMessageTrigger( const char *command )
 {
 	if( !strcasecmp( command, "impulse") )
@@ -1699,7 +1704,7 @@ static qbool Cmd_IsCommandAllowedInTeamPlayMacros( const char *command )
 	}
 	return *s != NULL;
 }
-
+*/
 //A complete command line has been parsed, so try to execute it
 static void Cmd_ExecuteStringEx (cbuf_t *context, char *text)
 {
@@ -1720,29 +1725,29 @@ static void Cmd_ExecuteStringEx (cbuf_t *context, char *text)
 	if (!Cmd_Argc())
 		goto done; // no tokens
 
-	if (cbuf_current == &cbuf_svc) {
+    /*if (cbuf_current == &cbuf_svc) {
 		if (CL_CheckServerCommand())
 			goto done;
-	}
+    }*/
 
 	// check functions
 	if ((cmd = Cmd_FindCommand(Cmd_Argv(0)))) {
 		if (gtf || cbuf_current == &cbuf_safe) {
-			if (!Cmd_IsCommandAllowedInMessageTrigger(Cmd_Argv(0))) {
+            /*if (!Cmd_IsCommandAllowedInMessageTrigger(Cmd_Argv(0))) {
 				Com_Printf ("\"%s\" cannot be used in message triggers\n", Cmd_Argv(0));
 				goto done;
-			}
+            }*/
 		} else if (cbuf_current == &cbuf_formatted_comms) {
-			if (!Cmd_IsCommandAllowedInTeamPlayMacros(Cmd_Argv(0))) {
+            /*if (!Cmd_IsCommandAllowedInTeamPlayMacros(Cmd_Argv(0))) {
 				Com_Printf ("\"%s\" cannot be used in combination with teamplay $macros\n", Cmd_Argv(0));
 				goto done;
-			}
+            }*/
 		}
 
 		if (cmd->function)
 			cmd->function();
-		else
-			Cmd_ForwardToServer ();
+        /*else
+            Cmd_ForwardToServer ();*/
 		goto done;
 	}
 
@@ -1756,8 +1761,8 @@ static void Cmd_ExecuteStringEx (cbuf_t *context, char *text)
 			Com_Printf ("\"%s\" cannot be used in combination with teamplay $macros\n", Cmd_Argv(0));
 			goto done;
 		}
-		if (Cvar_Command())
-			goto done;
+        /*if (Cvar_Command())
+            goto done;*/
 	}
 
 	// check aliases
@@ -1867,7 +1872,7 @@ static qbool is_numeric (char *c)
 	         ((*c == '-' || *c == '+') && (c[1] == '.' || isdigit((int)(unsigned char)c[1]))) ||
 	         (*c == '.' && isdigit((int)(unsigned char)c[1])) );
 }
-
+/*
 void Re_Trigger_Copy_Subpatterns (const char *s, int* offsets, int num, cvar_t *re_sub); // QW262
 extern cvar_t re_sub[10]; // QW262
 
@@ -1875,8 +1880,9 @@ void Cmd_CatchTriggerSubpatterns(const char *s, int* offsets, int num)
 {
 	Re_Trigger_Copy_Subpatterns(s, offsets, min(num, 10), re_sub);
 }
-
+*/
 // this is a test replacement of the "if" command
+/*
 void Cmd_If_New(void)
 {
 	// syntax of this command has two possibilities:
@@ -1975,7 +1981,8 @@ void Cmd_If_New(void)
 	strlcat (buf, "\n", sizeof(buf));
 	Cbuf_InsertTextEx (cbuf_current ? cbuf_current : &cbuf_main, buf);
 }
-
+*/
+/*
 void Cmd_If_Old (void)
 {
 	int	i, c;
@@ -2069,7 +2076,9 @@ void Cmd_If_Old (void)
 	strlcat (buf, "\n", sizeof (buf) - strlen (buf));
 	Cbuf_InsertTextEx (cbuf_current ? cbuf_current : &cbuf_main, buf);
 }
+*/
 
+/*
 void Cmd_If_f(void) {
 	if (Cmd_Argc() > 2 && Cmd_Argv(1)[0] == '(')
 		 // new "if" requires parentheses around the condition
@@ -2078,7 +2087,8 @@ void Cmd_If_f(void) {
 		 Cmd_If_New();
 	else Cmd_If_Old();
 }
-
+*/
+/*
 void Cmd_If_Exists_f(void)
 {
 	int	argc;
@@ -2117,7 +2127,8 @@ void Cmd_If_Exists_f(void)
 	} else
 		return;
 }
-
+*/
+/*
 void Cmd_Eval_f(void)
 {
 	int errn;
@@ -2133,7 +2144,7 @@ void Cmd_Eval_f(void)
 
 	if (errn != EXPR_EVAL_SUCCESS)
 	{
-		Com_Printf("Error occured: %s\n", Parser_Error_Description(errn));
+        Com_Printf("Error occured: %s\n", Parser_Error_Description(errn));
 		return;
 	}
 	else
@@ -2147,7 +2158,7 @@ void Cmd_Eval_f(void)
 		}
 	}
 }
-
+*/
 // QW262 -->
 static qbool do_in(char *buf, char *orig, char *str, int options)
 {
@@ -2346,6 +2357,7 @@ void Cmd_Shutdown(void)
 
 void Cmd_Init (void)
 {
+    /*
 	// register our commands
 	Cmd_AddCommand ("exec", Cmd_Exec_f);
 #ifndef SERVERONLY
@@ -2377,6 +2389,7 @@ void Cmd_Init (void)
     Cvar_Register(&cl_warnexec);
 
 	Cmd_AddCommand ("macrolist", Cmd_MacroList_f);
+    */
 	qsort(msgtrigger_commands,
 	      sizeof(msgtrigger_commands)/sizeof(msgtrigger_commands[0]),
 	      sizeof(msgtrigger_commands[0]),Commands_Compare_Func);

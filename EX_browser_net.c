@@ -245,8 +245,8 @@ void Parse_Serverinfo(server_data *s, char *info)
         s->players[i]->ping = ping;
         s->players[i]->spec = spec;
 
-        s->players[i]->top = Sbar_ColorForMap(top);
-        s->players[i]->bottom = Sbar_ColorForMap(bottom);
+        //s->players[i]->top = Sbar_ColorForMap(top);
+        //s->players[i]->bottom = Sbar_ColorForMap(bottom);
 
         strlcpy(s->players[i]->name, nameptr, sizeof(s->players[0]->name));
         strlcpy(s->players[i]->skin, skin, sizeof(s->players[0]->skin));
@@ -649,7 +649,7 @@ void GetServerPingsAndInfos_f(void)
 //
 // autoupdate serverinfo
 //
-
+/*
 int AutoupdateProc(void * lpParameter)
 {
     double lastupdatetime = -1;
@@ -660,7 +660,7 @@ int AutoupdateProc(void * lpParameter)
 
         if ((sb_liveupdate.integer > 0)  &&
             time >= lastupdatetime + sb_liveupdate.integer  &&
-            key_dest == key_menu /* todo: add "on server list tab" condition here */)
+            key_dest == key_menu)
         {
             server_data *serv;
 			
@@ -678,7 +678,8 @@ int AutoupdateProc(void * lpParameter)
     }
     return 0;
 }
-
+*/
+/*
 void Start_Autoupdate(server_data *s)
 {
     autoupdate_server = s;
@@ -686,8 +687,10 @@ void Start_Autoupdate(server_data *s)
 	    Com_Printf("Failed to create AutoupdateProc thread\n");
     }
 }
-
+*/
+/*
 void Alter_Autoupdate(server_data *s)
 {
     autoupdate_server = s;
 }
+*/
