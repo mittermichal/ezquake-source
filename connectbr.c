@@ -28,7 +28,7 @@ int common_main(int argc, char **argv)
     printf("connectbr prototype\n");
     //COM_InitArgv (argc, argv);
     if (argc<2) {
-        printf("Usage: connectbr <ip>\n");
+        printf("Usage: connectbr <address>\n");
         return 1;
     }
     Host_Init (argc, argv, 0);
