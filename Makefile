@@ -47,7 +47,7 @@ RCFLAGS_c :=
 LDFLAGS_c :=
 
 ifdef CONFIG_WINDOWS
-    LDFLAGS_c += -mwindows
+    LDFLAGS_c += -mwindows -mconsole
 
     # Mark images as DEP and ASLR compatible on x86 Windows
     ifeq ($(CPU),x86)
