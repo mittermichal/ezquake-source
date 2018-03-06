@@ -343,11 +343,9 @@ OBJS_c := \
 
 ifdef CONFIG_WINDOWS
     OBJS_c += \
-	movie_avi.o \
 	localtime_win.o \
-        sys_win.o \
-        winquake.o
-    LIBS_c += -lopengl32 -lws2_32 -lwinmm -lpthread
+        sys_win.o
+    LIBS_c += -lws2_32 -lwinmm -lpthread
 else
     OBJS_c += \
     	localtime_posix.o \

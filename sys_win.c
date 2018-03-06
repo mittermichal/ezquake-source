@@ -54,7 +54,7 @@ void Sys_PushFPCW_SetHigh (void);
 typedef HRESULT (WINAPI *SetProcessDpiAwarenessFunc)(_In_ DWORD value);
 
 #ifndef WITHOUT_WINKEYHOOK
-
+/*
 static HHOOK WinKeyHook;
 static qbool WinKeyHook_isActive;
 static qbool ScreenSaver_isDisabled = false;
@@ -63,7 +63,8 @@ static qbool PowerOff_isDisabled = false;
 LRESULT CALLBACK LLWinKeyHook(int Code, WPARAM wParam, LPARAM lParam);
 void OnChange_sys_disableWinKeys(cvar_t *var, char *string, qbool *cancel);
 cvar_t	sys_disableWinKeys = {"sys_disableWinKeys", "0", 0, OnChange_sys_disableWinKeys};
-
+*/
+/*
 extern qbool ActiveApp, Minimized;
 
 static void ReleaseKeyHook (void)
@@ -104,7 +105,8 @@ void OnChange_sys_disableWinKeys(cvar_t *var, char *string, qbool *cancel)
 		ReleaseKeyHook ();
 	}
 }
-
+*/
+/*
 LRESULT CALLBACK LLWinKeyHook(int Code, WPARAM wParam, LPARAM lParam) 
 {
 	PKBDLLHOOKSTRUCT p;
@@ -136,7 +138,8 @@ LRESULT CALLBACK LLWinKeyHook(int Code, WPARAM wParam, LPARAM lParam)
 
 	return CallNextHookEx(NULL, Code, wParam, lParam);
 }
-
+*/
+/*
 void Sys_ActiveAppChanged (void)
 {
 	static qbool appWasActive = true;
@@ -155,7 +158,7 @@ void Sys_ActiveAppChanged (void)
 		ReleaseKeyHook ();
 	}
 }
-
+*/
 #endif
 
 
@@ -409,15 +412,15 @@ void Sys_MakeCodeWriteable (unsigned long startaddr, unsigned long length)
 }
 
 /// turn back on screen saver and monitor power off
-static void Sys_RestoreScreenSaving(void)
+/*static void Sys_RestoreScreenSaving(void)
 {
     if (ScreenSaver_isDisabled)
         SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, TRUE, 0, SPIF_SENDWININICHANGE);
 
 	if (PowerOff_isDisabled)
 		SystemParametersInfo(SPI_SETPOWEROFFACTIVE, TRUE, 0, SPIF_SENDWININICHANGE);
-}
-
+}*/
+/*
 /// disable screen saver and monitor power off
 static void Sys_DisableScreenSaving(void)
 {
@@ -441,7 +444,7 @@ static void Sys_DisableScreenSaving(void)
 		}
 	}
 }
-
+*/
 void Sys_Error (char *error, ...) 
 {
 	va_list argptr;
@@ -459,7 +462,7 @@ void Sys_Error (char *error, ...)
 	if (qwclsemaphore)
 		CloseHandle (qwclsemaphore);
 
-	Sys_RestoreScreenSaving();
+    //Sys_RestoreScreenSaving();
  
 	exit (1);
 }
@@ -489,12 +492,12 @@ void Sys_Quit (void)
 	if (qwclsemaphore)
 		CloseHandle (qwclsemaphore);
 
-#ifndef WITHOUT_WINKEYHOOK
+/*#ifndef WITHOUT_WINKEYHOOK
 	if (WinKeyHook_isActive)
 		UnhookWindowsHookEx(WinKeyHook);
-#endif
+#endif*/
 
-	Sys_RestoreScreenSaving();
+    //Sys_RestoreScreenSaving();
  
 	exit (0);
 }
@@ -577,7 +580,7 @@ void Sys_Init (void)
 	Cvar_SetCurrentGroup(CVAR_GROUP_SYSTEM_SETTINGS);
 	Cvar_Register(&sys_highpriority);
 #ifndef WITHOUT_WINKEYHOOK
-	Cvar_Register(&sys_disableWinKeys);	
+    //Cvar_Register(&sys_disableWinKeys);
 #endif
 	Cvar_ResetCurrentGroup();
 
@@ -630,13 +633,13 @@ void Sys_Init_ (void)
 			int qwurl_parm = COM_CheckParm("+qwurl");
 			char cmd[1024] = { 0 };
 
-			if (COM_CheckArgsForPlayableFiles(cmd, sizeof(cmd)))
+            /*if (COM_CheckArgsForPlayableFiles(cmd, sizeof(cmd)))
 			{
 				// Play a demo/.qtv file if it was specified as the first argument.
 				Sys_SendIPC(cmd);
 				Sys_Quit();
-			}
-			else if (qwurl_parm)
+            }
+            else*/ if (qwurl_parm)
 			{
 				// If the user specified a QW URL on the commandline
 				// we forward it to the already running client.
@@ -790,13 +793,13 @@ static qbool Sys_CheckIfQWProtocolHandler(void)
 	CloseHandle(hk);
 	return false;
 }
-
+/*
 void Sys_CheckQWProtocolHandler(void)
 {
 	// Verify that ezQuake is associated with the QW:// protocl handler.
 	//
 	#define INITIAL_CON_WIDTH 35
-	extern cvar_t cl_verify_qwprotocol;
+    extern cvar_t cl_verify_qwprotocol;
 
 	if (cl_verify_qwprotocol.integer >= 2) {
 		// Always register the qw:// protocol.
@@ -816,7 +819,7 @@ void Sys_CheckQWProtocolHandler(void)
 		Com_Printf("\n\n");
 	}
 }
-
+*/
 void Sys_RegisterQWURLProtocol_f(void)
 {
 	//
@@ -1193,10 +1196,10 @@ int main(int argc, char **argv)
     return common_main(argc,argv);
 }
 
-int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) 
+int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     printf("test\n");
-	ParseCommandLine(lpCmdLine);
+    ParseCommandLine(lpCmdLine);
     return common_main(argc,argv);
 }
 
