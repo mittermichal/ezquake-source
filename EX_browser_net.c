@@ -568,7 +568,7 @@ int GetServerPingsAndInfosProc(void * lpParameter)
 			MarkDefaultSources();
 		}
 		SB_Sources_Update(true);
-        //Com_Printf("Got %d servers from sources\n",serversn);
+        Com_Printf("Got %d servers from sources\n",serversn);
 		if (useNewPing) {
 			// New Ping = UPD QW Packet ping using 2 threads (sender and receiver)
 			PingHosts(servers, serversn, sb_pings.integer);
