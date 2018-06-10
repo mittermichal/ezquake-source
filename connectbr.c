@@ -23,20 +23,44 @@
 
 #include "EX_browser.h"
 
+void proxy_json(void)
+{
+
+}
+
 int common_main(int argc, char **argv)
 {
+    //proxy_json();
+    //if (1) return 1;
+    char str_adr[255];
     printf("connectbr prototype\n");
     //COM_InitArgv (argc, argv);
     if (argc<2) {
-        printf("Usage: connectbr <address>\n");
-        return 1;
+        printf("no arguments given, waiting for user input\n");
+        printf("Type address of server: ");
+        scanf("%s",str_adr);
+    }
+    else {
+        strncpy(str_adr,argv[1],255);
     }
     Host_Init (argc, argv, 0);
+    netadr_t adr;
+
+    if (!NET_StringToAdr(str_adr, &adr)) {
+        Com_Printf("Invalid address\n");
+        return 1;
+    }
+
     SB_PingTree_Wait();
     GetServerPingsAndInfos(true);
     SB_PingTree_Shutdown();
-    //SB_ExecuteQueuedTriggers();
-    //Cmd_TokenizeString("connectbr 95.31.7.191:30000\n");
-    SB_PingTree_DumpPathStr(argv[1]);
+    SB_PingTree_DumpPathStr(str_adr);
+
+#ifdef _WIN32
+    if (argc<2) {
+        printf("press any key...");
+        getchar();
+   }
+#endif
     return 0;
 }
