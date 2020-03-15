@@ -57,6 +57,9 @@ extern cvar_t sb_listcache;
 #define PROXY_REPLY_ENTRY_LEN 8
 #define PROXY_REPLY_BUFFER_SIZE (PROXY_REPLY_ENTRY_LEN*MAX_SERVERS)
 
+#define PROXY_PINGQ3_QUERY "\xff\xff\xff\xffpingQ3"
+#define PROXY_PINGQ3_QUERY_LEN (sizeof(PROXY_PINGQ3_QUERY)-1)
+
 // current amount of qw servers ~ 300... but neighbour count means MAX_SERVERS*MAX_NONLEAVES
 #define INVALID_NODE (-1)
 typedef int nodeid_t;
@@ -299,6 +302,61 @@ static void SB_Proxy_ParseReply(const byte *buf, int buflen, proxy_ping_report_c
 			callback(adr, dist);
 		}
 	}
+}
+
+void SB_Proxy_QueryForQ3Ping(const netadr_t *address)
+{
+    byte buf[1000];
+    char packet[] = PROXY_PINGQ3_QUERY;
+    char adrstr[32];
+    struct sockaddr_in addr_to, addr_from;
+    struct timeval timeout;
+    fd_set fd;
+    socket_t sock;
+    int i, ret;
+    socklen_t inaddrlen;
+
+    snprintf(&adrstr[0], sizeof(adrstr), "%d.%d.%d.%d", (int) address->ip[0], (int) address->ip[1], (int) address->ip[2], (int) address->ip[3]);
+
+    addr_to.sin_addr.s_addr = inet_addr((const char *)adrstr);
+    if (addr_to.sin_addr.s_addr == INADDR_NONE) {
+        return;
+    }
+    addr_to.sin_family = AF_INET;
+    addr_to.sin_port = address->port;
+
+
+    sock = UDP_OpenSocket(PORT_ANY);
+    for (i = 0; i < sb_proxretries.integer; i++) {
+        ret = sendto(sock, packet, strlen(packet), 0, (struct sockaddr *)&addr_to, sizeof(struct sockaddr));
+        if (ret == -1) // failure, try again
+            continue;
+_select:
+        FD_ZERO(&fd);
+        FD_SET(sock, &fd);
+        timeout.tv_sec = 0;
+        timeout.tv_usec = sb_proxtimeout.integer * 1000;
+        ret = select(sock+1, &fd, NULL, NULL, &timeout);
+        if (ret <= 0) { // timed out or error
+            Com_DPrintf("select() gave errno = %d : %s\n", errno, strerror(errno));
+            continue;
+        }
+
+        inaddrlen = sizeof(struct sockaddr_in);
+        ret = recvfrom(sock, (char *) buf, sizeof(buf), 0, (struct sockaddr *)&addr_from, &inaddrlen);
+
+        if (ret == -1) // failure, try again
+            continue;
+        if (addr_from.sin_addr.s_addr != addr_to.sin_addr.s_addr) // martian, discard and see if a valid response came in after it
+            goto _select;
+        if (strncmp("\xff\xff\xff\xffg", (char *) buf, 5) == 0)
+            //SB_Proxy_ParseReply(buf+5, ret-5);
+            printf("reply %s\n",buf+5);
+
+        break;
+    }
+
+    closesocket(sock);
 }
 
 void SB_Proxy_QueryForPingList(const netadr_t *address, proxy_ping_report_callback callback)
@@ -546,10 +604,10 @@ static void SB_PingTree_ScanProxies(void)
 	}
 
 	if (sb_listcache.value) {
-		char prx_data_path[MAX_OSPATH] = {0};
+        char prx_data_path[MAX_OSPATH] = {"ezquake/sb/proxies_data"};
 
-		snprintf(&prx_data_path[0], sizeof(prx_data_path), "%s/%s", com_homedir, "proxies_data");
-		f = fopen(prx_data_path, "wb");
+        //snprintf(&prx_data_path[0], sizeof(prx_data_path), "%s/%s", com_homedir, "proxies_data");
+        f = fopen(prx_data_path, "wb");
 		if (f)
 			SB_Proxylist_Serialize_Start(f);
 	}
@@ -721,17 +779,20 @@ void SB_PingTree_DumpPath(const netadr_t *addr)
 		}
 		Com_Printf("%4d ms  localhost (your machine)\n", 0);
         int i;
-        Com_Printf("setu prx ");
+        char buf[1000];
+        sprintf(buf,"%s","setu prx ");
         for (i=route_i-2;i>=0;i--) {
             byte *ip = ping_nodes[route[i]].ipaddr.data;
-            Com_Printf("%d.%d.%d.%d:%d",
+            sprintf(buf,"%s%d.%d.%d.%d:%d",buf,
                 ip[0], ip[1], ip[2], ip[3],	(i>0)?ntohs(ping_nodes[route[i]].proxport):ntohs(addr->port));
-            if (i>0) Com_Printf("@");
+            if (i>0) sprintf(buf,"%s@",buf);
         }
         byte *ip = ping_nodes[route[route_i-1]].ipaddr.data;
-        Com_Printf(";connect %d.%d.%d.%d:%d\n",
+        sprintf(buf,"%s;connect %d.%d.%d.%d:%d",buf,
             ip[0], ip[1], ip[2], ip[3],	ntohs(ping_nodes[route[route_i-1]].proxport));
-        CopyToClipboard("test");
+        Com_Printf("%s\n",buf);
+        CopyToClipboard(buf);
+        Com_Printf("copied to clipboard\n");
 
 	}
 }
@@ -845,13 +906,13 @@ int SB_Proxylist_Unserialize(FILE *f)
 
 void SB_Proxylist_Unserialize_f(void)
 {
-	char filename[MAX_OSPATH] = {0};
+    char filename[MAX_OSPATH] = {"ezquake/sb/proxies_data"};
 	FILE *f;
 	int err;
 	
-	snprintf(&filename[0], sizeof(filename), "%s/%s", com_homedir, "proxies_data");
+    //snprintf(&filename[0], sizeof(filename), "%s/%s", com_homedir, "proxies_data");
 
-	if (!(f	= fopen(filename, "rb"))) {
+    if (!(f	= fopen(filename, "rb"))) {
 		Com_Printf("Couldn't read %s.\n", filename);
 		return;
 	}

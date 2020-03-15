@@ -603,7 +603,7 @@ void Host_Init (int argc, char **argv, int default_memsize)
     NET_Init ();
 
     //Commands_For_Configs_Init ();
-	Browser_Init2();
+    Browser_Init2();
     SB_RootInit();
     /*ConfigManager_Init();
     ResetBinds();*/

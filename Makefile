@@ -34,7 +34,7 @@ RMDIR ?= rm -rf
 MKDIR ?= mkdir -p
 XXD ?= xxd -i
 
-CFLAGS ?= -O2 -Wall -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast -Wno-strict-aliasing -Werror=strict-prototypes -Werror=old-style-definition -O0 -g -MMD $(INCLUDES)
+CFLAGS ?= -O2 -Wall -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast -Wno-strict-aliasing -Werror=strict-prototypes -Werror=old-style-definition -MMD $(INCLUDES)
 RCFLAGS ?=
 LDFLAGS ?=
 LIBS ?=
@@ -94,8 +94,8 @@ LIBS_c += $(SDL2_LIBS)
 # built-in requirements
 ZLIB_CFLAGS ?= -DWITH_ZLIB
 ZLIB_LIBS ?= -lz
-CFLAGS_c += $(ZLIB_CFLAGS)
-LIBS_c += $(ZLIB_LIBS)
+#CFLAGS_c += $(ZLIB_CFLAGS)
+#LIBS_c += $(ZLIB_LIBS)
 
 PCRE_CFLAGS ?= $(shell pkg-config libpcre --cflags)
 PCRE_LIBS ?= $(shell pkg-config libpcre --libs)
@@ -104,18 +104,18 @@ LIBS_c += $(PCRE_LIBS)
 
 EXPAT_CFLAGS ?= $(shell pkg-config expat --cflags)
 EXPAT_LIBS ?= $(shell pkg-config expat --libs)
-CFLAGS_c += $(EXPAT_CFLAGS)
-LIBS_c += $(EXPAT_LIBS)
+#CFLAGS_c += $(EXPAT_CFLAGS)
+#LIBS_c += $(EXPAT_LIBS)
 
 PNG_CFLAGS ?= $(shell pkg-config libpng --cflags) -DWITH_PNG -D__Q_PNG14__
 PNG_LIBS ?= $(shell pkg-config libpng --libs)
-CFLAGS_c += $(PNG_CFLAGS)
-LIBS_c += $(PNG_LIBS)
+#CFLAGS_c += $(PNG_CFLAGS)
+#LIBS_c += $(PNG_LIBS)
 
 JPEG_CFLAGS ?= -DWITH_JPEG
 JPEG_LIBS ?= -ljpeg
-CFLAGS_c += $(JPEG_CFLAGS)
-LIBS_c += $(JPEG_LIBS)
+#CFLAGS_c += $(JPEG_CFLAGS)
+#LIBS_c += $(JPEG_LIBS)
 
 CURL_CFLAGS ?= $(shell pkg-config libcurl --cflags)
 CURL_LIBS ?= $(shell pkg-config libcurl --libs)
@@ -124,14 +124,14 @@ LIBS_c += $(CURL_LIBS)
 
 JANSSON_CFLAGS ?= $(shell pkg-config jansson --cflags)
 JANSSON_LIBS ?= $(shell pkg-config jansson --libs)
-CFLAGS += $(JANSSON_CFLAGS)
-LIBS_c += $(JANSSON_LIBS)
+#CFLAGS += $(JANSSON_CFLAGS)
+#LIBS_c += $(JANSSON_LIBS)
 
 SPEEX_LIBS ?= $(shell pkg-config speex --libs) $(shell pkg-config speexdsp --libs)
 ifdef SPEEX_LIBS
     CFLAGS_c += -DWITH_SPEEX
 endif
-LIBS_c += $(SPEEX_LIBS)
+#LIBS_c += $(SPEEX_LIBS)
 
 # windres needs special quoting...
 RCFLAGS_c += -DREVISION=$(REV) -DVERSION='\"$(VER)\"'

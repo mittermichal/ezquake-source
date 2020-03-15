@@ -118,7 +118,7 @@ cvar_t  sb_showproxies   = {"sb_showproxies",      "0"};
 cvar_t  sb_sourcevalidity  = {"sb_sourcevalidity", "30"}; // not in menu
 cvar_t  sb_mastercache     = {"sb_mastercache",    "1"};  // not in menu
 cvar_t  sb_autoupdate      = {"sb_autoupdate",     "1"};  // not in menu
-cvar_t  sb_listcache       = {"sb_listcache",      "0"};
+cvar_t  sb_listcache       = {"sb_listcache",      "1"};
 
 // servers table
 server_data *servers[MAX_SERVERS];
@@ -3191,11 +3191,11 @@ int SB_Serverlist_Unserialize(FILE *f)
 void SB_Serverlist_Serialize_f(void)
 {
 	FILE *f;
-	char filename[MAX_OSPATH] = {0};
+    char filename[MAX_OSPATH] = {"ezquake/sb/servers_data"};
 
-	snprintf(&filename[0], sizeof(filename), "%s/%s", com_homedir, "servers_data");
+    //snprintf(&filename[0], sizeof(filename), "%s/%s", com_homedir, "servers_data");
 
-	if (!(f	= fopen	(filename, "wb"))) {
+    if (!(f	= fopen	(filename, "wb"))) {
 		FS_CreatePath(filename);
 		if (!(f	= fopen	(filename, "wb"))) {
 			Com_Printf ("Couldn't write	%s.\n",	filename);
@@ -3213,11 +3213,11 @@ void SB_Serverlist_Unserialize_f(void)
 {
 	FILE *f;
 	int err;
-	char filename[MAX_OSPATH] = {0};
+    char filename[MAX_OSPATH] = {"ezquake/sb/servers_data"};
 
-	snprintf(&filename[0], sizeof(filename), "%s/%s", com_homedir, "servers_data");
+    //snprintf(&filename[0], sizeof(filename), "%s/%s", com_homedir, "servers_data");
 
-	if (!(f	= fopen	(filename, "rb"))) {
+    if (!(f	= fopen	(filename, "rb"))) {
 		Com_Printf ("Couldn't read %s.\n", filename);
 		return;
 	}
